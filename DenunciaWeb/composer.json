@@ -1,0 +1,10 @@
+{
+    "require": {
+        "doctrine/orm": "*",
+        "smarty/smarty": "v3.1.18",
+        "aura/router": "2.*@dev"
+    },
+    "autoload": {
+        "psr-4": {"App\\": "app"}
+    }
+}
