@@ -60,3 +60,4 @@ proguard/
 /local.properties
 /.idea/workspace.xml
 .DS_Store
+AndroidAplication/.idea/workspace.xml
