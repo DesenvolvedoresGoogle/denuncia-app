@@ -15,44 +15,35 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/main_header"
+        <RelativeLayout
+            android:id="@+id/denuncia_header"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:gravity="center"
-            android:background="#000077">
+            android:layout_height="400dp"
+            android:background="#000077"
+            android:gravity="center">
 
-            <TextView
-                android:id="@+id/main_app_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/main_app_name"
-                android:text="Juiz de Fora"
-                android:textAllCaps="true"/>
-
-        </LinearLayout>
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/main_nearby"
-            android:layout_below="@id/main_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/view_margin"
-            android:paddingTop="@dimen/view_margin"
-            android:paddingLeft="@dimen/screen_margin"
+            android:layout_below="@id/denuncia_header"
             android:layout_marginRight="@dimen/screen_margin"
-            android:text="@string/dencuncias_proximas"/>
+            android:paddingBottom="@dimen/view_margin"
+            android:paddingLeft="@dimen/screen_margin"
+            android:paddingTop="@dimen/view_margin"
+            android:text="@string/dencuncias_proximas" />
 
         <ListView
-            android:layout_below="@id/main_nearby"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/view_margin"/>
+            android:layout_below="@id/main_nearby"
+            android:layout_marginTop="@dimen/view_margin" />
 
     </RelativeLayout>
 
