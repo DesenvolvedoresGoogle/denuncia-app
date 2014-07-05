@@ -9,9 +9,17 @@ class APIController extends BaseController
         parent::__construct($params, true);
     }
 
+    public function loginUserAction()
+    {
+        if (isset($_POST['google_id'])) {
+            $user_bussines = new \App\Business\UserBusiness($this->db);
+            $user = new \App\Model\User($_POST);
+        } else
+            $this->view->assign('erro', 'Necessário passar o google_id');
+    }
+
     public function testeAction()
     {
-        
         $this->view->display();
     }
 }
