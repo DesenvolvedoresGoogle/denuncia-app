@@ -12,6 +12,11 @@ if (defined('PRODUCTION') && file_exists($cache)) {
 
     // Home
     $router->add('Home.index', '/');
+    
+    // Order
+    $router->add('API.action', '/api/{action}/')->addTokens(array(
+        'action' => 'teste'
+    ));
 
     // Caching
     if (defined('PRODUCTION')) {

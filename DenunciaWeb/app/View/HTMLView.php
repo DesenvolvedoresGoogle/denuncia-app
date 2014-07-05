@@ -1,7 +1,7 @@
 <?php
 namespace App\View;
 
-class View
+class HTMLView implements iView
 {
 
     private $smarty;
@@ -14,19 +14,13 @@ class View
         $this->assign('url', URL);
     }
 
-    public function assign($var, $value)
+    public function assign($key, $value)
     {
-        $this->smarty->assign($var, $value);
+        $this->smarty->assign($key, $value);
     }
 
-    public function display($tpl)
+    public function display($tpl = null)
     {
         $this->smarty->display($tpl);
     }
-
-    public function setTitle($value, $opt = 0)
-    {
-        $this->assign('title', $value);
-    }
-    
 }
