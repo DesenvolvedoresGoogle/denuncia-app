@@ -9,6 +9,7 @@ class APIView implements iView
     public function __construct()
     {
         $this->output = array();
+        $this->output['status'] = 'sucess';
     }
 
     public function assign($key, $value)
@@ -18,6 +19,8 @@ class APIView implements iView
 
     public function display($tpl = null)
     {        
+        if(isset($this->output['erro']))
+            $this->output['status'] = 'fail';
         header('Content-Type: application/json');
         echo json_encode($this->output, JSON_PRETTY_PRINT);
     }

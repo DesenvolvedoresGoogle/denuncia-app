@@ -59,7 +59,7 @@ class UserBusiness
     {
         try {
             if (! $this->validate($user))
-                throw new \Exception(implode('</p><p>', $this->validate_erros));
+                throw new \Exception(implode(',', $this->validate_erros));
             $this->userDAO->save($user);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
@@ -69,12 +69,33 @@ class UserBusiness
     public function validate(\App\Model\User $user)
     {
         $this->validate_erros = array();
-        
-        $this->validateUserType($user->getType());
+
+        $this->validateName($user->getName());
+        $this->validateToken($user->getToken());
         
         if (count($this->validate_erros) > 0)
             return false;
         
         return true;
+    }
+    
+    public function validateName($name)
+    {
+        if(!is_null($name) && strlen($name) > 0)
+            return true;
+        else {
+            $this->validate_erros['name'] = 'Nome inválido';
+            return false;
+        }
+    }
+    
+    public function validateToken($token)
+    {
+        if(!is_null($token) && strlen($token) > 0)
+            return true;
+        else {
+            $this->validate_erros['token'] = 'token inválido';
+            return false;
+        }
     }
 }
