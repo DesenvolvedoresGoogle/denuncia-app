@@ -18,9 +18,17 @@ class APIView implements iView
     }
 
     public function display($tpl = null)
-    {        
-        if(isset($this->output['erro']))
+    {
+        if ($tpl == '500.tpl')
+            $this->output['erro'] = 'Internal Error';
+        if ($tpl == '404.tpl')
+            $this->output['erro'] = 'Not Found';
+        
+        if (isset($this->output['erro']))
             $this->output['status'] = 'fail';
+        
+        \App\Library\Clean::utf8EncodeArray($this->output);
+        
         header('Content-Type: application/json');
         echo json_encode($this->output, JSON_PRETTY_PRINT);
     }
