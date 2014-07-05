@@ -21,6 +21,11 @@ class User
     protected $user_id;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $name;
+
+    /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="user")
      * @ORM\JoinColumn(name="user", referencedColumnName="user_id", nullable=false)
      */
@@ -43,6 +48,18 @@ class User
         return $this->user_id;
     }
 
+    public function setName($name)
+    {
+        $this->name = $name;
+        
+        return $this;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
     public function addComment(Comment $comment)
     {
         $this->comments[] = $comment;
@@ -51,7 +68,6 @@ class User
     }
 
     /**
-     *
      * @return \Doctrine\Common\Collections\Collection
      */
     public function getComments()

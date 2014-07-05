@@ -12,12 +12,15 @@ class BaseController
 
     protected $db;
 
-    public function __construct($params)
+    public function __construct($params, $is_api = false)
     {
         session_start();
         $this->params = $params;
         $this->config = require_once APP_PATH . '/config.php';
-        $this->view = new \App\View\View();
+        if($is_api)
+            $this->view = new \App\View\APIView();
+        else
+            $this->view = new \App\View\HTMLView();
         
         try {
             $doctrine_util = new \App\Persistence\DoctrineUtil($this->config['database']);
