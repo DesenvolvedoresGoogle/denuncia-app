@@ -1,7 +1,18 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<fragment
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/map"
     tools:context="br.com.maps.MapsActivity"
     android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+   <Button
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:id="@+id/btnCapturePicture"
+       android:text="Take a Picture"
+       android:layout_marginBottom="10dp"/>
+</RelativeLayout>
