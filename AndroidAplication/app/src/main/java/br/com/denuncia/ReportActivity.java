@@ -17,16 +17,17 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
-import br.com.denuncia.R;
 import br.com.denuncia.adapter.CommentListAdapter;
 import br.com.denuncia.model.Comment;
 import br.com.denuncia.model.Report;
 
 public class ReportActivity extends ListActivity implements AbsListView.OnScrollListener {
     private static final String TAG = "ReportActivity";
-    private ImageView mReportImage;
+    //private ImageView mReportImage;
     private Report mReport;
     private View mHeader;
     private View mBar;
@@ -35,16 +36,37 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
     private TypedValue mTypedValue = new TypedValue();
     private ArrayList<Comment> comments;
     private View mPlaceHolderView;
+    private ImageView mReportImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_denuncia);
 
+        try {
+            mReport = new Report(new URL("http://osl.ulpgc.es/wosl/wp-content/uploads/2014/05/new-google-chrome-logo.jpg/"), "Titulo", "Decrição", 0, 0);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        comments = new ArrayList<Comment>();
+
+        try {
+            for (int i = 0; i < 100; i++)
+                comments.add(new Comment("Comentário teste", new URL("http://google.com/")));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        mBar = findViewById(R.id.report_nearby);
+        mHeader = findViewById(R.id.report_header);
+        mReportImage = (ImageView) findViewById(R.id.report_photo);
+
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         int screenWidth = size.x;
+
         getTheme().resolveAttribute(android.R.attr.actionBarSize, mTypedValue,
                 true);
         mActionBarHeight = TypedValue.complexToDimensionPixelSize(
@@ -57,14 +79,10 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
         mPlaceHolderView = getLayoutInflater().inflate(
                 R.layout.view_header_placeholder, getListView(), false);
 
-        AbsListView.LayoutParams params = (AbsListView.LayoutParams) mPlaceHolderView.getLayoutParams();
-        params.height = screenWidth + mBar.getHeight();
-        mPlaceHolderView.setLayoutParams(params);
-
         setListAdapter(new CommentListAdapter(this, comments));
         getListView().setOnScrollListener(ReportActivity.this);
         getListView().addHeaderView(mPlaceHolderView);
-        getListView().smoothScrollToPosition(1);
+        getListView().smoothScrollToPosition(0);
     }
 
 
@@ -131,7 +149,7 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
 
             try {
                 //TODO Verificar conexão
-                if (mReport.getPhoto() != null)
+                //if (mReport.getPhoto() != null)
                     image = BitmapFactory.decodeStream(mReport.getPhoto()
                             .openConnection().getInputStream());
 

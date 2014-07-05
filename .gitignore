@@ -61,3 +61,5 @@ proguard/
 /.idea/workspace.xml
 .DS_Store
 AndroidAplication/.idea/workspace.xml
+AndroidAplication/.gradle/1.12/taskArtifacts/cache.properties.lock
+AndroidAplication/local.properties

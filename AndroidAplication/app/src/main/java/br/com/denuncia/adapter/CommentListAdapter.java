@@ -16,12 +16,12 @@ import br.com.denuncia.model.Comment;
 /**
  * Created by User on 05/07/2014.
  */
-public class CommentListAdapter extends ArrayAdapter<String> {
+public class CommentListAdapter extends ArrayAdapter<Comment> {
 
     private ArrayList<Comment> comments;
 
     public CommentListAdapter(Context context, ArrayList<Comment> comments) {
-        super(context, R.layout.view_comment);
+        super(context, R.layout.view_comment, comments);
         this.comments = comments;
     }
 
@@ -38,6 +38,8 @@ public class CommentListAdapter extends ArrayAdapter<String> {
             //holder.userPhoto = ((ImageView) row.findViewById(R.id.comment_user_photo));
 
             row.setTag(holder);
+        } else {
+            holder = (Holder) row.getTag();
         }
 
         holder.text.setText(comments.get(position).getText());
