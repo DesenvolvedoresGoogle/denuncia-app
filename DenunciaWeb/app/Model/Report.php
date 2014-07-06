@@ -200,7 +200,7 @@ class Report
         return $this->comments;
     }
 
-    public function toArray()
+    public function toArray($try_comment = false)
     {
         $return = array(
             'report_id' => $this->report_id,
@@ -214,9 +214,11 @@ class Report
             'user' => $this->user->toArray(),
             'comments' => array()
         );
-        if (count($this->comments) > 0) {
-            foreach ($this->comments as $comment) {
-                $return['comments'][] = $comment->toArray();
+        if ($try_comment) {
+            if (count($this->comments) > 0) {
+                foreach ($this->comments as $comment) {
+                    $return['comments'][] = $comment->toArray();
+                }
             }
         }
         

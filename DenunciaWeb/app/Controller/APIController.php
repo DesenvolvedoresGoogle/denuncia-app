@@ -59,7 +59,7 @@ class APIController extends BaseController
         
         try {
             if (! isset($_FILES['image']['error']) || is_array($_FILES['image']['error'])) {
-                throw new \Exception('Parâmetros inválidos');
+                throw new \Exception('É necessário enviar a imagem');
             }
             
             switch ($_FILES['image']['error']) {
@@ -136,8 +136,8 @@ class APIController extends BaseController
 
     public function getNearReportsAction()
     {
-        // if(!isset($_POST['max']))
-        // $user = $this->getLoggedUser();
+        if(!isset($_POST['max']))
+            $user = $this->getLoggedUser();
         if (isset($_POST['latitude']) && isset($_POST['longitude'])) {
             $report_business = new \App\Business\ReportBusiness($this->db);
             $reports = $report_business->getReportsArround($_POST['latitude'], $_POST['longitude']);
@@ -161,7 +161,7 @@ class APIController extends BaseController
         if (isset($_POST['report_id'])) {
             $report = (new \App\Business\ReportBusiness($this->db))->getReportById($_POST['report_id']);
             if(!is_null($report))
-                $this->view->assign('report', $report->toArray());
+                $this->view->assign('report', $report->toArray(true));
             else
                 $this->view->assign('erro', 'Denúncia não encontrada');
         } else
