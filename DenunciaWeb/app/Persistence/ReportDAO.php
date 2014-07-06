@@ -33,8 +33,9 @@ class ReportDAO extends BaseDAO
             $result = $query->getResult();
             $report_list = array();
             
-            foreach ($result as $report)
+            foreach($result as $report)
                 $report_list[] = $report[0];
+            
         } catch (\Exception $e) {
             $report_list = null;
         }

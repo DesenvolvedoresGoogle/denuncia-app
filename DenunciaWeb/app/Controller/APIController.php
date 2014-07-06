@@ -74,16 +74,7 @@ class APIController extends BaseController
                     throw new \Exception('Erro desconhecido');
             }
             
-            $finfo = new \finfo(FILEINFO_MIME_TYPE);
-            if (false === $ext = array_search($finfo->file($_FILES['image']['tmp_name']), array(
-                'jpg' => 'image/jpeg',
-                'png' => 'image/png',
-                'gif' => 'image/gif'
-            ), true)) {
-                throw new \Exception('Formato de imagem inválido');
-            }
-            
-            $photo = sha1($_FILES['image']['tmp_name'].$user->getToken()) . '.' . $ext;
+            $photo = sha1($_FILES['image']['tmp_name'].$user->getToken()) . '.jpg';
             
             if (! move_uploaded_file($_FILES['image']['tmp_name'], IMAGES_PATH.'/'.$photo)) {
                 throw new \Exception('Erro Fatal');
