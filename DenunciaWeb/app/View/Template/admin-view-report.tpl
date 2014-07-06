@@ -4,6 +4,7 @@
 <div class="row" style="padding: 10px;">
 	<div class="col-md-3">
 		<img src="{$url}images/{$report->getPhoto()}" class="img-thumbnail">
+		<div id="gmap" style="height:150px;width:100%;margin-top:20px;"></div>
 	</div>
 	<div class="col-md-9">
         <form name="edit" method="post" class="form-horizontal" role="form">
@@ -72,4 +73,14 @@
         	{/foreach}
         
         </table>
+{/block}
+{block name=javascript}
+    <!-- Maps API Javascript -->
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA5gTD_bN9U_fl_quA7FrWAz4o21fMTnKo&amp;sensor=false"></script>
+	<script>
+		ReportLatitude = "{$report->getLatitude()}";
+		ReportLongitude = "{$report->getLongitude()}";
+	</script>
+	<!-- denuncia.map js -->
+	<script src="{$url}js/denuncia.report.view.js"></script>
 {/block}
