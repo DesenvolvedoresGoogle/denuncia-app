@@ -14,11 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.br.com.utils.Constants;
+import br.com.denuncia.adapter.CommentListAdapter;
 import br.com.denuncia.model.Comment;
 import br.com.denuncia.model.Report;
 import br.com.login.Json;
@@ -57,7 +60,6 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
 
         int id = extras.getInt("id");
 
-        ///Report
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
         builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -80,6 +82,8 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
         mPlaceHolderView = getLayoutInflater().inflate(
                 R.layout.view_placeholder_report, getListView(), false);
 
+
+
         getListView().setOnScrollListener(ReportActivity.this);
         getListView().addHeaderView(mPlaceHolderView);
         getListView().smoothScrollToPosition(0);
@@ -98,10 +102,6 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -150,10 +150,22 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
     public void onPostSent(JSONObject jsonObject) {
         try {
             JSONObject json = (JSONObject) jsonObject.get("report");
-            mReport = new Report(json.getInt("report_id"), new URL(Constants.IMAGE + json.getString("photo")),
+            mReport = new Report(json.getInt("report_id"), new URL(Constants.IMAGE + json.getString("photo").replace(".jpg", "SMALL.jpg")),
                     json.getString("title"), json.getString("description"),
                     json.getString("address"), json.getDouble("latitude"), json.getDouble("longitude"));
 
+            ((TextView) findViewById(R.id.report_title)).setText(mReport.getTitle());
+            ((TextView) findViewById(R.id.report_address)).setText(mReport.getAddress());
+            ((TextView) findViewById(R.id.report_view_description)).setText(mReport.getDescription());
+
+
+            comments = new ArrayList<Comment>();
+            JSONArray jsonArray = json.getJSONArray("comments");
+            for(int i = 0; i < jsonArray.length(); i++){
+                comments.add(new Comment(jsonArray.getJSONObject(i).getJSONObject("user").getString("name"), jsonArray.getJSONObject(i).getString("comment"), null));
+            }
+
+            setListAdapter(new CommentListAdapter(this, comments));
             new ImageLoader().execute();
         } catch (JSONException e) {
             e.printStackTrace();

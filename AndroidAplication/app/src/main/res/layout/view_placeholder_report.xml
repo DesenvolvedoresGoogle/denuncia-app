@@ -4,45 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/report_bar"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:layout_marginTop="@dimen/report_header_height"
+    android:layout_height="wrap_content"
     android:background="@color/bar"
+    android:orientation="vertical"
     tools:context="br.com.denuncia.ReportActivity">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/report_header_height"/>
+
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/screen_margin"
-        android:paddingRight="@dimen/view_margin">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <br.com.denuncia.ui.CustomTextView
-            android:id="@+id/report_title"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:text="Calçada danificada"
-            android:textAllCaps="true"
-            android:textColor="@android:color/white"
-            app:typeface="bold" />
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/screen_margin"
+            android:paddingBottom="@dimen/view_margin"
+            android:paddingTop="@dimen/view_margin">
 
-        <br.com.denuncia.ui.CustomTextView
-            android:id="@+id/report_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:text="Bairro Santa Tereza, 17/11/13, 17:55"
-            android:textColor="@android:color/white"
-            app:typeface="light" />
+            <br.com.denuncia.ui.CustomTextView
+                android:id="@+id/report_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                app:typeface="bold" />
+
+            <br.com.denuncia.ui.CustomTextView
+                android:id="@+id/report_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:layout_gravity="top"
+                app:typeface="light" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:padding="@dimen/view_margin"
+                android:background="@android:color/white"/>
+
+            <br.com.denuncia.ui.CustomTextView
+                android:id="@+id/report_view_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:typeface="light"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+        <br.com.denuncia.ui.SquareImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:onClick="showMap"
+            android:padding="@dimen/view_margin"
+            android:src="@drawable/ic_action_place"
+            app:measure_with="height" />
+
     </LinearLayout>
-
-    <br.com.denuncia.ui.SquareImageView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:onClick="showMap"
-        android:padding="@dimen/view_margin"
-        android:src="@drawable/ic_action_place"
-        app:measure_with="height" />
 </LinearLayout>

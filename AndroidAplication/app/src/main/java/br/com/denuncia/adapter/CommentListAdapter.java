@@ -1,6 +1,7 @@
 package br.com.denuncia.adapter;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-
 
 import br.com.denuncia.model.Comment;
 import br.com.login.R;
@@ -43,7 +43,7 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
             holder = (Holder) row.getTag();
         }
 
-        holder.text.setText(comments.get(position).getText());
+        holder.text.setText(Html.fromHtml("<b>+"+ comments.get(position).getUser() + "</b>  " + comments.get(position).getText()));
 
         return row;
     }

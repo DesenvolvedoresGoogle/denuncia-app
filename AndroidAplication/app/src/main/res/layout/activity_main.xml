@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:background="#000077">
+    android:background="@color/bar"
+    tools:context="br.com.denuncia.MainActivity">
 
     <LinearLayout
         android:gravity="center"
@@ -40,14 +42,30 @@
             android:text="Juiz de Fora"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:typeface="light" />
 
     </LinearLayout>
 
+    <br.com.denuncia.ui.CustomTextView
+        android:id="@+id/main_footer"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:textColor="@android:color/white"
+        android:textAllCaps="true"
+        app:typeface="bold"
+        android:text="Nova denúncia"
+        android:onClick="newReport"
+        android:gravity="center"
+        android:background="@color/bar"/>
+
     <ListView
         android:id="@android:id/list"
+        android:layout_above="@id/main_footer"
         android:layout_height="match_parent"
         android:layout_width="match_parent" />
+
+
 
 </RelativeLayout>

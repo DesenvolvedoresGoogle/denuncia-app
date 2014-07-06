@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Denuncia</string>
+    <string name="app_name">Denúncias</string>
     <string name="title_activity_main">Início</string>
     <string name="title_activity_login">Login</string>
     <string name="action_settings">Preferências</string>
@@ -12,8 +12,7 @@
     <!-- Button text -->
     <string name="btn_logout_from_google">Logout from Google</string>
     <string name="btn_revoke_access">Revoke Access</string>
-    <string name="title_activity_send_report">SendReportActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_send_report">Nova denúncia</string>
     <string name="title_activity_report">Denúncia</string>
 
 </resources>

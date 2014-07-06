@@ -9,6 +9,7 @@
     android:background="@android:color/background_light"
     tools:context="br.com.denuncia.ReportActivity">
 
+
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
