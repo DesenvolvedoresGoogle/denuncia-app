@@ -17,10 +17,21 @@ class ReportBusiness
     /**
      * @return \App\Model\Report
      */
-    public function getReportById($f_id)
+    public function getReportById($id)
     {
         if (is_int($id) || is_numeric($id))
             return $this->reportDAO->getReportById($id);
+        else
+            return null;
+    }
+    
+    /**
+     * @return \App\Model\Report
+     */
+    public function getReportsArround($lat, $long)
+    {
+        if (!is_null($lat) && !is_null($long))
+            return $this->reportDAO->getReportsArround($lat, $long);
         else
             return null;
     }
@@ -59,20 +70,20 @@ class ReportBusiness
 
     public function validateTitle($title)
     {
-        if(!is_null($title) && strlen($title) > 10)
+        if(!is_null($title) && strlen($title) > 5)
             return true;
         else {
-            $this->validate_erros['title'] = 'Título deve possuir pelo menos 10 caracteres';
+            $this->validate_erros['title'] = 'Título deve possuir pelo menos 5 caracteres';
             return false;
         }
     }
     
     public function validateDescription($description)
     {
-        if(!is_null($description) && strlen($description) > 20)
+        if(!is_null($description) && strlen($description) > 10)
             return true;
         else {
-            $this->validate_erros['description'] = 'Descrição deve possuir pelo menos 20 caracteres';
+            $this->validate_erros['description'] = 'Descrição deve possuir pelo menos 10 caracteres';
             return false;
         }
     }

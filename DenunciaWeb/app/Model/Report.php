@@ -34,7 +34,28 @@ class Report
      * @ORM\Column(type="string", length=255)
      */
     protected $photo;
-    
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    protected $latitude;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    protected $longitude;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $creation_date;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="reports")
+     * @ORM\JoinColumn(name="user", referencedColumnName="user_id", onDelete="CASCADE", nullable=false)
+     */
+    protected $user;
+
     /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="report")
      * @ORM\JoinColumn(name="report", referencedColumnName="report_id", nullable=false)
@@ -94,6 +115,58 @@ class Report
         return $this->photo;
     }
 
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+        
+        return $this;
+    }
+
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+        
+        return $this;
+    }
+
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    public function setCreationDate($creation_date)
+    {
+        $this->creation_date = $creation_date;
+        
+        return $this;
+    }
+
+    public function getCreationDate()
+    {
+        return $this->creation_date;
+    }
+
+    public function setUser(User $user = null)
+    {
+        $this->user = $user;
+        
+        return $this;
+    }
+
+    /**
+     *
+     * @return \Model\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
     public function addComment(Comment $comment)
     {
         $this->comments[] = $comment;
@@ -108,5 +181,19 @@ class Report
     public function getComments()
     {
         return $this->comments;
+    }
+
+    public function toArray()
+    {
+        return array(
+            'report_id' => $this->report_id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'photo' => $this->photo,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+            'creation_date' => $this->creation_date->getTimestamp(),
+            'user' => $this->user->toArray()
+        );
     }
 }

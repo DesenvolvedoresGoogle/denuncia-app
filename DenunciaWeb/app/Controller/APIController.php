@@ -51,13 +51,38 @@ class APIController extends BaseController
     public function createReportAction()
     {
         $user = $this->getLoggedUser();
+        
+        $report = new \App\Model\Report();
+        $report->setTitle('Buraco na Rua');
+        $report->setDescription('Teste Descrição');
+        $report->setPhoto('seila,png');
+        $report->setLatitude('10.6');
+        $report->setLongitude('10.6');
+        $report->setCreationDate(new \DateTime("now"));
+        $report->setUser($user);
+        
+        $report_business = new \App\Business\ReportBusiness($this->db);
+        
+        try {
+            $report_business->update($report);
+            $this->view->assign('report', (array) $report);
+            $this->view->assign('nome', $report->getCreationDate());
+        } catch (\Exception $e) {
+            $this->view->assign('erro', $e->getMessage());
+        }
+        
+        $this->view->display();
     }
 
     public function testeAction()
     {
-        $user = $this->getLoggedUser();
-        $array = array('teste' => 'uahsuah <br> seila', 'continua' => 'hehe');
-        \App\Library\Clean::cleanArray($array);
+        $report_business = new \App\Business\ReportBusiness($this->db);
+        $reports = $report_business->getReportsArround(10.6, 10.6);
+        $array = array();
+        foreach ($reports as $report){
+            if(is_object($report))
+                $array[] = $report->toArray();
+        }
         $this->view->assign('test', $array);
         
         $this->view->display();

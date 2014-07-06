@@ -19,7 +19,8 @@ class Clean
     
     private static function utf8encode(&$value)
     {
-        $value = utf8_encode($value);
+        if(!is_object($value))
+            $value = utf8_encode($value);
     }
     
     public static function utf8EncodeArray(&$array)

@@ -24,6 +24,11 @@ class User
      * @ORM\Column(type="string", length=255)
      */
     protected $name;
+    
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $photo;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -36,6 +41,12 @@ class User
     protected $token;
 
     /**
+     * @ORM\OneToMany(targetEntity="Report", mappedBy="user")
+     * @ORM\JoinColumn(name="user", referencedColumnName="user_id", nullable=false)
+     */
+    protected $reports;
+
+    /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="user")
      * @ORM\JoinColumn(name="user", referencedColumnName="user_id", nullable=false)
      */
@@ -46,7 +57,10 @@ class User
         if (is_array($infos)) {
             $this->google_id = (isset($infos['google_id']) ? $infos['google_id'] : null);
             $this->name = (isset($infos['name']) ? $infos['name'] : null);
+            $this->photo = (isset($infos['photo']) ? $infos['photo'] : null);
         }
+        
+        $this->reports = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
 
@@ -72,6 +86,18 @@ class User
     public function getName()
     {
         return $this->name;
+    }
+    
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+    
+        return $this;
+    }
+    
+    public function getPhoto()
+    {
+        return $this->photo;
     }
 
     public function setGoogleId($google_id)
@@ -112,5 +138,30 @@ class User
     public function getComments()
     {
         return $this->comments;
+    }
+
+    public function addReport(Report $report)
+    {
+        $this->reports[] = $report;
+        
+        return $this;
+    }
+
+    /**
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReports()
+    {
+        return $this->reports;
+    }
+    
+    public function toArray()
+    {
+        return array(
+            'user_id' => $this->user_id,
+            'name' => $this->name,
+            'google_id' => $this->google_id
+        );
     }
 }

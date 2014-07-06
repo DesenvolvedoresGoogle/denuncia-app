@@ -15,8 +15,8 @@ if (strstr($_SERVER['SERVER_NAME'], 'localhost')) {
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
 } else {
-    define('URL', 'http://matheusmarques.com/DenunciaWeb/');
-    define('URL_PATH', str_replace('/DenunciaWeb', '', $url_path));
+    define('URL', 'http://denuncia.matheusmarques.com/');
+    define('URL_PATH', $url_path);
     define('PRODUCTION', true);
     ini_set('session.cookie_domain', '.matheusmarques.com');
     ini_set('display_errors', 0);
