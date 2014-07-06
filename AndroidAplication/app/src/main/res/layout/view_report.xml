@@ -4,6 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:layout_margin="@dimen/screen_margin"
     android:orientation="vertical">
 
     <br.com.denuncia.ui.SquareImageView
@@ -12,5 +14,17 @@
         android:layout_height="wrap_content"
         app:measure_with="width"
         android:scaleType="centerCrop"/>
+
+    <br.com.denuncia.ui.CustomTextView
+        android:id="@+id/view_report_title"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:typeface="bold"/>
+
+    <br.com.denuncia.ui.CustomTextView
+        android:id="@+id/view_report_address"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:typeface="light"/>
 
 </LinearLayout>

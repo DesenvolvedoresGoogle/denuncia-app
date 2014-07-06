@@ -10,14 +10,16 @@ public class Report {
     private URL photo;
     private String title;
     private String description;
+    private String address;
     private double latitude;
     private double longitude;
 
 
-    public Report(URL photo, String title, String description, double latitude, double longitude) {
+    public Report(URL photo, String title, String description, String address, double latitude, double longitude) {
         this.photo = photo;
         this.title = title;
         this.description = description;
+        this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -60,5 +62,13 @@ public class Report {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

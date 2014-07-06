@@ -44,7 +44,7 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
         setContentView(R.layout.activity_denuncia);
 
         try {
-            mReport = new Report(new URL("http://osl.ulpgc.es/wosl/wp-content/uploads/2014/05/new-google-chrome-logo.jpg/"), "Titulo", "Decrição", -21.7600964, -43.3471169);
+            mReport = new Report(new URL("http://osl.ulpgc.es/wosl/wp-content/uploads/2014/05/new-google-chrome-logo.jpg/"), "Titulo", "Decrição", "Endereço", -21.7600964, -43.3471169);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -61,8 +61,6 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
         mBar = findViewById(R.id.report_bar);
         mHeader = findViewById(R.id.report_header);
         mReportImage = (ImageView) findViewById(R.id.report_photo);
-
-
 
         getTheme().resolveAttribute(android.R.attr.actionBarSize, mTypedValue,
                 true);

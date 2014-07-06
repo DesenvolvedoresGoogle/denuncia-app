@@ -9,6 +9,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -152,7 +153,7 @@ public class MainActivity extends ListActivity implements AbsListView.OnScrollLi
                 JSONObject json = results.getJSONObject(i);
                 reports.add(new Report(new URL(Constants.IMAGE + json.getString("photo")),
                         json.getString("title"), json.getString("description"),
-                        json.getDouble("latitude"), json.getDouble("longitude")));
+                        json.getString("address"), json.getDouble("latitude"), json.getDouble("longitude")));
                 Log.v("test", i + "");
             }
         } catch (JSONException e) {
@@ -198,18 +199,18 @@ public class MainActivity extends ListActivity implements AbsListView.OnScrollLi
 
     private class ImageLoader extends AsyncTask<Void, Void, Void> {
 
-        private ArrayList<Bitmap> images;
+        private ArrayList<Pair<Report, Bitmap>> info;
 
         @Override
         protected Void doInBackground(Void... urls) {
 
-            images = new ArrayList<Bitmap>();
+            info = new ArrayList<Pair<Report, Bitmap>>();
 
             try {
                 //TODO Verificar conexão
                 for (Report r : reports)
-                    images.add(BitmapFactory.decodeStream(r.getPhoto()
-                            .openConnection().getInputStream()));
+                    info.add(new Pair<Report, Bitmap>(r, BitmapFactory.decodeStream(r.getPhoto()
+                            .openConnection().getInputStream())));
 
 
             } catch (IOException e) {
@@ -223,7 +224,7 @@ public class MainActivity extends ListActivity implements AbsListView.OnScrollLi
         @SuppressLint("NewApi")
         @Override
         protected void onPostExecute(Void result) {
-            setListAdapter(new ReportListAdapter(MainActivity.this, images));
+            setListAdapter(new ReportListAdapter(MainActivity.this, info));
         }
     }
 }
