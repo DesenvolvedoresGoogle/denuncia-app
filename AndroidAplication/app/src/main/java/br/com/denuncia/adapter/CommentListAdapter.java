@@ -10,8 +10,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import br.com.denuncia.R;
+
 import br.com.denuncia.model.Comment;
+import br.com.login.R;
 
 /**
  * Created by User on 05/07/2014.

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import br.com.denuncia.adapter.CommentListAdapter;
 import br.com.denuncia.model.Comment;
 import br.com.denuncia.model.Report;
+import br.com.login.R;
 
 public class ReportActivity extends ListActivity implements AbsListView.OnScrollListener {
     private static final String TAG = "ReportActivity";

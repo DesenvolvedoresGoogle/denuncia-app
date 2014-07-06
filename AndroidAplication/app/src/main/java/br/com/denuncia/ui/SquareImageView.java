@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.ImageView;
-import br.com.denuncia.R;
+import br.com.login.R;
 
 /**
  * Created by User on 05/07/2014.

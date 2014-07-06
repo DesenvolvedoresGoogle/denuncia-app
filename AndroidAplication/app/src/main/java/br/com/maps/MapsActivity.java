@@ -26,7 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import br.com.denuncia.R;
+import br.com.login.R;
 
 
 public class MapsActivity extends FragmentActivity  {

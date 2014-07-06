@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import br.com.denuncia.R;
+import br.com.login.R;
 import java.io.InputStream;
 
 import android.app.Activity;

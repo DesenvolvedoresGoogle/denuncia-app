@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-import br.com.denuncia.R;
+import br.com.login.R;
 
 /**
  * Created by User on 05/07/2014.

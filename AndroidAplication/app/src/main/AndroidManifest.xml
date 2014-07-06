@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="br.com.denuncia" >
+    package="br.com.login" >
 
     <application
         android:allowBackup="true"
@@ -12,21 +12,20 @@
 
 
         <activity
-            android:name=".MyActivity"
+            android:name="br.com.denuncia.MyActivity"
             android:label="@string/title_activity_main" >
         </activity>
         <activity
-            android:name=".ReportActivity"
+            android:name="br.com.denuncia.ReportActivity"
             android:label="@string/title_activity_main" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="br.com.maps.MapsActivity"
             android:label="@string/title_activity_maps" >
+        </activity>
+        <activity
+            android:name="br.com.login.LoginActivity"
+            android:label="@string/title_activity_login" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
