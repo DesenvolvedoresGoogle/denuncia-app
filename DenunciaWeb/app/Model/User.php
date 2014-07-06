@@ -161,6 +161,7 @@ class User
         return array(
             'user_id' => $this->user_id,
             'name' => $this->name,
+            'photo' => $this->photo,
             'google_id' => $this->google_id
         );
     }

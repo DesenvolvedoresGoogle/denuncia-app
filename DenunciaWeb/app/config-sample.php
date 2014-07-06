@@ -1,7 +1,7 @@
 <?php
 return array(
     'database' => array(
-        'driver' => '',
+        'driver' => 'pdo_mysql',
         'user' => '',
         'password' => '',
         'dbname' => ''

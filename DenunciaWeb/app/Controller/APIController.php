@@ -79,10 +79,10 @@ class APIController extends BaseController
         $report_business = new \App\Business\ReportBusiness($this->db);
         $reports = $report_business->getReportsArround(10.6, 10.6);
         $array = array();
-        foreach ($reports as $report){
-            if(is_object($report))
-                $array[] = $report->toArray();
+        foreach ($reports as $report) {
+            $array[] = $report->toArray();
         }
+        
         $this->view->assign('test', $array);
         
         $this->view->display();

@@ -72,6 +72,7 @@ class UserBusiness
 
         $this->validateName($user->getName());
         $this->validateToken($user->getToken());
+        $this->validatePhoto($user->getPhoto());
         
         if (count($this->validate_erros) > 0)
             return false;
@@ -95,6 +96,16 @@ class UserBusiness
             return true;
         else {
             $this->validate_erros['token'] = 'token inválido';
+            return false;
+        }
+    }
+    
+    public function validatePhoto($photo)
+    {
+        if(!is_null($photo) && strlen($photo) > 0)
+            return true;
+        else {
+            $this->validate_erros['photo'] = 'foto inválida';
             return false;
         }
     }
