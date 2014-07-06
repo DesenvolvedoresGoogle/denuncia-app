@@ -29,7 +29,7 @@ class CommentBusiness
     {
         try {
             if (! $this->validate($comment))
-                throw new \Exception(implode('</p><p>', $this->validate_erros));
+                throw new \Exception(implode(',', $this->validate_erros));
             $this->commentDAO->save($comment);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());

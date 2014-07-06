@@ -58,11 +58,12 @@ class APIController extends BaseController
         $user = $this->getLoggedUser();
         
         $report = new \App\Model\Report();
-        $report->setTitle('Buraco na Rua');
-        $report->setDescription('Teste Descrição');
-        $report->setPhoto('seila,png');
-        $report->setLatitude('10.6');
-        $report->setLongitude('10.6');
+        $report->setTitle(isset($_POST['title']) ? $_POST['title'] : null);
+        $report->setDescription(isset($_POST['description']) ? $_POST['description'] : null);
+        $report->setPhoto(isset($_POST['photo']) ? $_POST['photo'] : null);
+        $report->setLatitude(isset($_POST['latitude']) ? $_POST['latitude'] : null);
+        $report->setLongitude(isset($_POST['longitude']) ? $_POST['longitude'] : null);
+        $report->setAddress(isset($_POST['address']) ? $_POST['address'] : null);
         $report->setCreationDate(new \DateTime("now"));
         $report->setUser($user);
         
@@ -70,8 +71,7 @@ class APIController extends BaseController
         
         try {
             $report_business->update($report);
-            $this->view->assign('report', (array) $report);
-            $this->view->assign('nome', $report->getCreationDate());
+            $this->view->assign('report', $report->toArray());
         } catch (\Exception $e) {
             $this->view->assign('erro', $e->getMessage());
         }

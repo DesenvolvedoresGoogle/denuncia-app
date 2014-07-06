@@ -51,7 +51,7 @@ class ReportBusiness
     {
         try {
             if (! $this->validate($report))
-                throw new \Exception(implode('</p><p>', $this->validate_erros));
+                throw new \Exception(implode(',', $this->validate_erros));
             $this->reportDAO->save($report);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
@@ -117,7 +117,7 @@ class ReportBusiness
 
     public function validateGeoLocation($latitude, $longitude)
     {
-        if (! is_null($latitude) && ! is_null($longitude) && ((is_double($lat) || is_numeric($lat)) && (is_double($long) || is_numeric($long))))
+        if (! is_null($latitude) && ! is_null($longitude) && ((is_double($latitude) || is_numeric($latitude)) && (is_double($longitude) || is_numeric($longitude))))
             return true;
         else {
             $this->validate_erros['geolocation'] = 'Latitude e Longitude inválidos';
@@ -130,7 +130,7 @@ class ReportBusiness
         if (! is_null($address) && strlen($address) > 5)
             return true;
         else {
-            $this->validate_erros['address'] = 'Indereço inválido';
+            $this->validate_erros['address'] = 'Endereço inválido';
             return false;
         }
     }
