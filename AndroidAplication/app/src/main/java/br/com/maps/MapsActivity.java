@@ -18,7 +18,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;
@@ -54,8 +53,9 @@ public class MapsActivity extends FragmentActivity {
         setContentView(R.layout.activity_maps);
 
         Bundle extras = getIntent().getExtras();
-        double latitude = extras.getDouble("latitude");
-        double longitude = extras.getDouble("longitude");
+//        double latitude = extras.getDouble("latitude");
+  //      double longitude = extras.getDouble("longitude");
+
 
         btnCapturePicture = (Button) findViewById(R.id.btnCapturePicture);
 
@@ -63,9 +63,10 @@ public class MapsActivity extends FragmentActivity {
 
         mMap.setMyLocationEnabled(true);
         gps = new GPSTracker(MapsActivity.this);
+        location = new Location(gps.getLocation());
         CameraUpdate center =
-                CameraUpdateFactory.newLatLng(new LatLng(latitude,
-                        longitude));
+                CameraUpdateFactory.newLatLng(new LatLng(gps.getLatitude(),
+                        gps.getLongitude()));
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
 
         mMap.moveCamera(center);
@@ -195,8 +196,9 @@ public class MapsActivity extends FragmentActivity {
 
             final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
                     options);
-            image = BitmapDescriptorFactory.fromBitmap(bitmap);
-            MapModule.insertProblem(location, mMap, image);
+
+            MapModule mapModule = new MapModule();
+            mapModule.insertProblem(location, mMap, fileUri.getPath(), null, null);
 
         }
     }

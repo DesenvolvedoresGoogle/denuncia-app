@@ -7,13 +7,18 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -55,11 +60,23 @@ public class Json {
         protected Void doInBackground(Void... args) {
             // Making HTTP request
             try {
+                MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
                 // defaultHttpClient
                 DefaultHttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(url);
-                httpPost.setEntity(new UrlEncodedFormEntity(params));
+                if(params != null) {
+                    for(int index=0; index < params.size(); index++) {
+                        if(params.get(index).getName().equalsIgnoreCase("image")) {
+                            // If the key equals to "image", we use FileBody to transfer the data
+                            entity.addPart(params.get(index).getName(), new FileBody(new File(params.get(index).getValue())));
+                        } else {
+                            // Normal string data
+                            entity.addPart(params.get(index).getName(), new StringBody(params.get(index).getValue(), ContentType.DEFAULT_TEXT));
+                        }
+                    }
 
+                    httpPost.setEntity(entity);
+                }
                 HttpResponse httpResponse = httpClient.execute(httpPost);
                 HttpEntity httpEntity = httpResponse.getEntity();
                 is = httpEntity.getContent();

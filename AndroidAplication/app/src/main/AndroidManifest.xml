@@ -14,11 +14,6 @@
             android:name="br.com.denuncia.MainActivity"
             android:theme="@style/AppTheme.Overlay"
             android:label="@string/title_activity_main" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="br.com.denuncia.ReportActivity"
@@ -28,6 +23,12 @@
         <activity
             android:name="br.com.maps.MapsActivity"
             android:label="@string/title_activity_maps" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".LoginActivity"

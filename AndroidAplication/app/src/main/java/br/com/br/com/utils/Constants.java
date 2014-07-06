@@ -11,6 +11,7 @@ public class Constants {
     public static final int RC_SIGN_IN = 0;
     public static final String NEAR_REPORTS = "api/get-near-reports/";
     public static final String IMAGE = "http://denuncia.matheusmarques.com/images/";
+    public static final String CREATE_REPORT = "api/create-report/";
 
 
 }
