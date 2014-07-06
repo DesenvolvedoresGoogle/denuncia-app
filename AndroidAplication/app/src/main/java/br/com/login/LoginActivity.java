@@ -1,13 +1,6 @@
 package br.com.login;
 
 import android.app.Activity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import br.com.login.R;
-import java.io.InputStream;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.graphics.Bitmap;
@@ -35,8 +28,20 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
-public class LoginActivity  extends Activity implements OnClickListener,
-        ConnectionCallbacks, OnConnectionFailedListener {
+import org.apache.http.NameValuePair;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import br.com.br.com.utils.Constants;
+
+public class LoginActivity extends Activity implements OnClickListener,
+        ConnectionCallbacks, OnConnectionFailedListener, Json.PostListener {
     private static final int RC_SIGN_IN = 0;
     // Logcat tag
     private static final String TAG = "LoginActivity";
@@ -52,6 +57,8 @@ public class LoginActivity  extends Activity implements OnClickListener,
      * from starting further intents.
      */
     private boolean mIntentInProgress;
+    private String idUSer, photoUser, nameUser;
+
 
     private boolean mSignInClicked;
 
@@ -101,7 +108,7 @@ public class LoginActivity  extends Activity implements OnClickListener,
 
     /**
      * Method to resolve any signin errors
-     * */
+     */
     private void resolveSignInError() {
         if (mConnectionResult.hasResolution()) {
             try {
@@ -167,7 +174,7 @@ public class LoginActivity  extends Activity implements OnClickListener,
 
     /**
      * Updating the UI, showing/hiding buttons and profile layout
-     * */
+     */
     private void updateUI(boolean isSignedIn) {
         if (isSignedIn) {
             btnSignIn.setVisibility(View.GONE);
@@ -184,32 +191,35 @@ public class LoginActivity  extends Activity implements OnClickListener,
 
     /**
      * Fetching user's information name, email, profile pic
-     * */
+     */
     private void getProfileInformation() {
         try {
             if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
                 Person currentPerson = Plus.PeopleApi
                         .getCurrentPerson(mGoogleApiClient);
-                String personName = currentPerson.getDisplayName();
-                String personPhotoUrl = currentPerson.getImage().getUrl();
+                nameUser = currentPerson.getDisplayName();
+                photoUser = currentPerson.getImage().getUrl();
+                idUSer = currentPerson.getId();
                 String personGooglePlusProfile = currentPerson.getUrl();
                 String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
-                Log.e(TAG, "Name: " + personName + ", plusProfile: "
+                Log.e(TAG, "Google ID: " + idUSer + ", Name: " + nameUser + ", plusProfile: "
                         + personGooglePlusProfile + ", email: " + email
-                        + ", Image: " + personPhotoUrl);
+                        + ", Image: " + photoUser);
 
-                txtName.setText(personName);
+                txtName.setText(nameUser);
                 txtEmail.setText(email);
+
 
                 // by default the profile url gives 50x50 px image only
                 // we can replace the value with whatever dimension we want by
                 // replacing sz=X
-                personPhotoUrl = personPhotoUrl.substring(0,
-                        personPhotoUrl.length() - 2)
+                photoUser = photoUser.substring(0,
+                        photoUser.length() - 2)
                         + PROFILE_PIC_SIZE;
 
-                new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);
+                new LoadProfileImage(imgProfilePic).execute(photoUser);
+                userLogin();
 
             } else {
                 Toast.makeText(getApplicationContext(),
@@ -235,7 +245,7 @@ public class LoginActivity  extends Activity implements OnClickListener,
 
     /**
      * Button on click listener
-     * */
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -256,7 +266,7 @@ public class LoginActivity  extends Activity implements OnClickListener,
 
     /**
      * Sign-in into google
-     * */
+     */
     private void signInWithGplus() {
         if (!mGoogleApiClient.isConnecting()) {
             mSignInClicked = true;
@@ -266,7 +276,7 @@ public class LoginActivity  extends Activity implements OnClickListener,
 
     /**
      * Sign-out from google
-     * */
+     */
     private void signOutFromGplus() {
         if (mGoogleApiClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
@@ -278,7 +288,7 @@ public class LoginActivity  extends Activity implements OnClickListener,
 
     /**
      * Revoking access from google
-     * */
+     */
     private void revokeGplusAccess() {
         if (mGoogleApiClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
@@ -296,8 +306,41 @@ public class LoginActivity  extends Activity implements OnClickListener,
     }
 
     /**
+     * function make Login Request
+     */
+
+    public void userLogin() {
+        try {
+
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+
+            params.add(new BasicNameValuePair("google_id", idUSer));
+            params.add(new BasicNameValuePair("name", nameUser));
+            params.add(new BasicNameValuePair("photo", photoUser));
+
+            // getting JSON Object
+            Json json = new Json(Constants.URL + Constants.LOGIN_USER, params);
+            json.post(this);
+            // return json
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    @Override
+    public void onPostSent(JSONObject jsonObject) {
+
+    }
+
+    /**
      * Background Async task to load user profile picture from url
-     * */
+     */
     private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -322,4 +365,6 @@ public class LoginActivity  extends Activity implements OnClickListener,
             bmImage.setImageBitmap(result);
         }
     }
+
 }
+
