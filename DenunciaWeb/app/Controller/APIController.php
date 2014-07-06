@@ -94,7 +94,8 @@ class APIController extends BaseController
 
     public function getNearReportsAction()
     {
-        $user = $this->getLoggedUser();
+        //if(!isset($_POST['max']))
+         //   $user = $this->getLoggedUser();
         if (isset($_POST['latitude']) && isset($_POST['longitude'])) {
             $report_business = new \App\Business\ReportBusiness($this->db);
             $reports = $report_business->getReportsArround($_POST['latitude'], $_POST['longitude']);

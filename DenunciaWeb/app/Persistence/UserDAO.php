@@ -24,7 +24,7 @@ class UserDAO extends BaseDAO
         return $user;
     }
 
-    public function getUserByUserId($user_id)
+    public function getUserById($user_id)
     {
         try {
             $query = $this->db->createQuery("SELECT u FROM App\Model\User AS u WHERE u.user_id = :userid");
