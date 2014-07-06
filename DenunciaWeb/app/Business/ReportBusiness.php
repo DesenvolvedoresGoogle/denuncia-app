@@ -15,6 +15,7 @@ class ReportBusiness
     }
 
     /**
+     *
      * @return \App\Model\Report
      */
     public function getReportById($id)
@@ -24,8 +25,9 @@ class ReportBusiness
         else
             return null;
     }
-    
+
     /**
+     *
      * @return \App\Model\Report
      */
     public function getReportsArround($lat, $long)
@@ -35,8 +37,9 @@ class ReportBusiness
         else
             return null;
     }
-    
+
     /**
+     *
      * @return \App\Model\Report
      */
     public function getAllReports($start = null, $max = null)
@@ -63,6 +66,8 @@ class ReportBusiness
         $this->validateDescription($report->getDescription());
         $this->validateUser($report->getUser());
         $this->validatePhoto($report->getPhoto());
+        $this->validateGeoLocation($report->getLatitude(), $report->getLongitude());
+        $this->validateAddress($report->getAddress());
         
         if (count($this->validate_erros) > 0)
             return false;
@@ -72,17 +77,17 @@ class ReportBusiness
 
     public function validateTitle($title)
     {
-        if(!is_null($title) && strlen($title) > 5)
+        if (! is_null($title) && strlen($title) > 5)
             return true;
         else {
             $this->validate_erros['title'] = 'Título deve possuir pelo menos 5 caracteres';
             return false;
         }
     }
-    
+
     public function validateDescription($description)
     {
-        if(!is_null($description) && strlen($description) > 10)
+        if (! is_null($description) && strlen($description) > 10)
             return true;
         else {
             $this->validate_erros['description'] = 'Descrição deve possuir pelo menos 10 caracteres';
@@ -92,20 +97,40 @@ class ReportBusiness
 
     public function validateUser(\App\Model\User $user)
     {
-        if(!is_null($user) && !is_null($user->getUserId()))
+        if (! is_null($user) && ! is_null($user->getUserId()))
             return true;
         else {
             $this->validate_erros['user'] = 'Denuncia precisa de um usuário';
             return false;
         }
     }
-    
+
     public function validatePhoto($photo)
     {
-        if(!is_null($photo) && strlen($photo) > 0)
+        if (! is_null($photo) && strlen($photo) > 0)
             return true;
         else {
             $this->validate_erros['photo'] = 'Denuncia precisa de uma foto';
+            return false;
+        }
+    }
+
+    public function validateGeoLocation($latitude, $longitude)
+    {
+        if (! is_null($latitude) && ! is_null($longitude) && ((is_double($lat) || is_numeric($lat)) && (is_double($long) || is_numeric($long))))
+            return true;
+        else {
+            $this->validate_erros['geolocation'] = 'Latitude e Longitude inválidos';
+            return false;
+        }
+    }
+    
+    public function validateAddress($address)
+    {
+        if (! is_null($address) && strlen($address) > 5)
+            return true;
+        else {
+            $this->validate_erros['address'] = 'Indereço inválido';
             return false;
         }
     }

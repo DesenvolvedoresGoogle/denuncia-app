@@ -10,11 +10,11 @@ public class Report {
     private URL photo;
     private String title;
     private String description;
-    private float latitude;
-    private float longitude;
+    private double latitude;
+    private double longitude;
 
 
-    public Report(URL photo, String title, String description, float latitude, float longitude) {
+    public Report(URL photo, String title, String description, double latitude, double longitude) {
         this.photo = photo;
         this.title = title;
         this.description = description;
@@ -46,19 +46,19 @@ public class Report {
         this.description = description;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 }

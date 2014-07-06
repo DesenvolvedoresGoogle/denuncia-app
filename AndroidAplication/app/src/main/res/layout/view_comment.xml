@@ -14,13 +14,14 @@
     <br.com.denuncia.ui.SquareImageView
         android:id="@+id/comment_user_photo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:measure_with="height"/>
 
     <br.com.denuncia.ui.CustomTextView
         android:id="@+id/comment_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/view_margin"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="16sp"
         app:typeface="light"/>
 </LinearLayout>

@@ -29,7 +29,7 @@ import java.util.Locale;
 import br.com.login.R;
 
 
-public class MapsActivity extends FragmentActivity  {
+public class MapsActivity extends FragmentActivity {
     // Activity request codes
     private Uri fileUri;
 
@@ -53,18 +53,20 @@ public class MapsActivity extends FragmentActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        btnCapturePicture = (Button) findViewById(R.id.btnCapturePicture);
+        Bundle extras = getIntent().getExtras();
+        double latitude = extras.getDouble("latitude");
+        double longitude = extras.getDouble("longitude");
 
+        btnCapturePicture = (Button) findViewById(R.id.btnCapturePicture);
 
         mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 
         mMap.setMyLocationEnabled(true);
         gps = new GPSTracker(MapsActivity.this);
-        location = new Location(gps.getLocation());
-        CameraUpdate center=
-                CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(),
-                        location.getLongitude()));
-        CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
+        CameraUpdate center =
+                CameraUpdateFactory.newLatLng(new LatLng(latitude,
+                        longitude));
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
 
         mMap.moveCamera(center);
         mMap.animateCamera(zoom);
@@ -86,7 +88,6 @@ public class MapsActivity extends FragmentActivity  {
     }
 
 
-
     public GoogleMap getmMap() {
         return mMap;
     }
@@ -106,11 +107,11 @@ public class MapsActivity extends FragmentActivity  {
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.
-     * <p>
+     * <p/>
      * If it isn't installed {@link SupportMapFragment} (and
      * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
      * install/update the Google Play services APK on their device.
-     * <p>
+     * <p/>
      * A user can return to this FragmentActivity after following the prompt and correctly
      * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
      * have been completely destroyed during this process (it is likely that it would only be
@@ -135,6 +136,7 @@ public class MapsActivity extends FragmentActivity  {
         // start the image capture Intent
         startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
     }
+
     /*
  * Creating file uri to store image/video
  */
@@ -151,7 +153,8 @@ public class MapsActivity extends FragmentActivity  {
         File mediaStorageDir = new File(
                 Environment
                         .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                IMAGE_DIRECTORY_NAME);
+                IMAGE_DIRECTORY_NAME
+        );
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
@@ -180,10 +183,9 @@ public class MapsActivity extends FragmentActivity  {
     }
 
 
-
     /**
      * Receiving activity result method will be called after closing the camera
-     * */
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
