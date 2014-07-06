@@ -46,6 +46,11 @@ class Report
     protected $longitude;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $address;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $creation_date;
@@ -139,6 +144,18 @@ class Report
         return $this->longitude;
     }
 
+    public function setAddress($address)
+    {
+        $this->address = $address;
+        
+        return $this;
+    }
+
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
     public function setCreationDate($creation_date)
     {
         $this->creation_date = $creation_date;
@@ -192,6 +209,7 @@ class Report
             'photo' => $this->photo,
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
+            'address' => $this->address,
             'creation_date' => $this->creation_date->getTimestamp(),
             'user' => $this->user->toArray()
         );

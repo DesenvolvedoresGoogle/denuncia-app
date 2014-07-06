@@ -112,4 +112,14 @@ class Comment
     {
         return $this->report;
     }
+    
+    public function toArray()
+    {
+        return array(
+            'comment_id' => $this->comment_id,
+            'comment' => $this->comment,
+            'photo' => $this->photo,
+            'user' => $this->user->toArray()
+        );
+    }
 }
