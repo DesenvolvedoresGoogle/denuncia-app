@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:layout_margin="@dimen/screen_margin"
+    android:padding="@dimen/view_margin"
     android:orientation="vertical">
 
     <br.com.denuncia.ui.SquareImageView

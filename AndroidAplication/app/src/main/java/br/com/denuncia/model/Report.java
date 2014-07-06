@@ -7,6 +7,7 @@ import java.net.URL;
  */
 public class Report {
 
+    private int id;
     private URL photo;
     private String title;
     private String description;
@@ -15,7 +16,8 @@ public class Report {
     private double longitude;
 
 
-    public Report(URL photo, String title, String description, String address, double latitude, double longitude) {
+    public Report(int id, URL photo, String title, String description, String address, double latitude, double longitude) {
+        this.id = id;
         this.photo = photo;
         this.title = title;
         this.description = description;
@@ -70,5 +72,13 @@ public class Report {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

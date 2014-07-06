@@ -15,22 +15,30 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
-import br.com.denuncia.adapter.CommentListAdapter;
+import br.com.br.com.utils.Constants;
 import br.com.denuncia.model.Comment;
 import br.com.denuncia.model.Report;
+import br.com.login.Json;
 import br.com.login.R;
 import br.com.maps.MapsActivity;
 
-public class ReportActivity extends ListActivity implements AbsListView.OnScrollListener {
+public class ReportActivity extends ListActivity implements AbsListView.OnScrollListener, Json.PostListener {
     private static final String TAG = "ReportActivity";
     private Report mReport;
     private View mHeader;
-    private View mBar;
     private int mMinHeaderTranslation;
     private int mActionBarHeight;
     private TypedValue mTypedValue = new TypedValue();
@@ -43,22 +51,22 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_denuncia);
 
-        try {
-            mReport = new Report(new URL("http://osl.ulpgc.es/wosl/wp-content/uploads/2014/05/new-google-chrome-logo.jpg/"), "Titulo", "Decrição", "Endereço", -21.7600964, -43.3471169);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        Bundle extras = getIntent().getExtras();
+        if(extras == null)
+            finish();
 
-        comments = new ArrayList<Comment>();
+        int id = extras.getInt("id");
 
-        try {
-            for (int i = 0; i < 100; i++)
-                comments.add(new Comment("Comentário teste" + i, new URL("http://google.com/")));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        ///Report
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
-        mBar = findViewById(R.id.report_bar);
+        params.add(new BasicNameValuePair("token", Constants.TOKEN));
+        params.add(new BasicNameValuePair("report_id", String.valueOf(id)));
+
+        Json.post(this, Constants.URL + Constants.SINGLE_REPORT, params);
+
         mHeader = findViewById(R.id.report_header);
         mReportImage = (ImageView) findViewById(R.id.report_photo);
 
@@ -69,12 +77,9 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
 
         mMinHeaderTranslation = -getResources().getDimensionPixelSize(R.dimen.report_header_height) + mActionBarHeight;
 
-        new ImageLoader().execute();
-
         mPlaceHolderView = getLayoutInflater().inflate(
                 R.layout.view_placeholder_report, getListView(), false);
 
-        setListAdapter(new CommentListAdapter(this, comments));
         getListView().setOnScrollListener(ReportActivity.this);
         getListView().addHeaderView(mPlaceHolderView);
         getListView().smoothScrollToPosition(0);
@@ -112,7 +117,6 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
         float translationY = Math.max(-scrollY, mMinHeaderTranslation);
         // translação dos objetos
         mHeader.setTranslationY(translationY);
-        mBar.setTranslationY(translationY);
         mReportImage.setTranslationY(-translationY + translationY / 5);
     }
 
@@ -140,6 +144,22 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
         intent.putExtra("latitude", mReport.getLatitude());
         intent.putExtra("longitude", mReport.getLongitude());
         startActivity(intent);
+    }
+
+    @Override
+    public void onPostSent(JSONObject jsonObject) {
+        try {
+            JSONObject json = (JSONObject) jsonObject.get("report");
+            mReport = new Report(json.getInt("report_id"), new URL(Constants.IMAGE + json.getString("photo")),
+                    json.getString("title"), json.getString("description"),
+                    json.getString("address"), json.getDouble("latitude"), json.getDouble("longitude"));
+
+            new ImageLoader().execute();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
     private class ImageLoader extends AsyncTask<Void, Void, Void> {
