@@ -74,7 +74,7 @@ class APIController extends BaseController
                     throw new \Exception('Erro desconhecido');
             }
             
-            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
             if (false === $ext = array_search($finfo->file($_FILES['image']['tmp_name']), array(
                 'jpg' => 'image/jpeg',
                 'png' => 'image/png',
@@ -140,6 +140,22 @@ class APIController extends BaseController
         } else
             $this->view->assign('erro', 'Necessário enviar latitude e longitude');
         
+        $this->view->display();
+    }
+    
+    public function getReportAction()
+    {
+        $user = $this->getLoggedUser();
+        
+        if (isset($_POST['report_id'])) {
+            $report = (new \App\Business\ReportBusiness($this->db))->getReportById($_POST['report_id']);
+            if(!is_null($report))
+                $this->view->assign('report', $report->toArray());
+            else
+                $this->view->assign('erro', 'Denúncia não encontrada');
+        } else
+            $this->view->assign('erro', 'Necessário enviar report_id');
+    
         $this->view->display();
     }
 

@@ -202,7 +202,7 @@ class Report
 
     public function toArray()
     {
-        return array(
+        $return = array(
             'report_id' => $this->report_id,
             'title' => $this->title,
             'description' => $this->description,
@@ -213,5 +213,12 @@ class Report
             'creation_date' => $this->creation_date->getTimestamp(),
             'user' => $this->user->toArray()
         );
+        if (count($this->comments->toArray()) > 0) {
+            foreach ($this->comments as $comment) {
+                $return['comments'][] = $comment->toArray();
+            }
+        }
+        
+        return $return;
     }
 }
