@@ -6,6 +6,9 @@
 {block name=javascript}
     <!-- Maps API Javascript -->
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA5gTD_bN9U_fl_quA7FrWAz4o21fMTnKo&amp;sensor=false"></script>
+	<script>
+		URLGLOBAL = "{$url}";
+	</script>
 	<!-- denuncia.map js -->
 	<script src="{$url}js/denuncia.map.js"></script>
 {/block}

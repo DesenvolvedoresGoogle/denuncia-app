@@ -44,31 +44,46 @@ $(document).ready(function() {
 	}
 	
 	google.maps.event.addListener(map, 'center_changed', function() {
-		deleteMarkers();
 		clearTimeout(timeout);
 		timeout = setTimeout(function() {
-	    	
-	      loadPoints(map.getCenter().lat(), map.getCenter().lng());
+			deleteMarkers();
+			loadPoints(map.getCenter().lat(), map.getCenter().lng());
 	    }, 3000);
 	  });
 	
 	function loadPoints(latitude, longitude) {
 		$.ajax({
 			type : 'POST',
-			url : 'http://localhost/DenunciaApp/DenunciaWeb/public/api/get-near-reports/',
+			url : URLGLOBAL+'api/get-near-reports/',
 			data : {'max': 50, 'latitude': latitude, 'longitude': longitude},
 			dataType : 'json'
 		}).done(function(data) {
 			$.each(data.reports, function(index, report) {
 				 
-	            var marker = new google.maps.Marker({
-	                position: new google.maps.LatLng(report.latitude, report.longitude),
-	                title: report.title,
-	                map: map
-	            });
+				var contentString = '<div id="content">'+
+			      '<h1 id="firstHeading" class="firstHeading">'+report.title+'</h1>'+
+			      '<div id="bodyContent">'+
+			      '<p>'+report.description+'</p>'+
+			      '<p><a href="'+URLGLOBAL+'admin/view-report/id-'+report.report_id+'/" target="_blank">'+
+			      'Clique Aqui</a> para mais informações. </p> '+
+			      '</div>'+
+			      '</div>';
+
+			  var infowindow = new google.maps.InfoWindow({
+			      content: contentString
+			  });
+
+			  var marker = new google.maps.Marker({
+				  position: new google.maps.LatLng(report.latitude, report.longitude),
+			      map: map,
+			      title: report.title,
+			  });
+			  
+			  google.maps.event.addListener(marker, 'click', function() {
+			    infowindow.open(map,marker);
+			  });
 	            
-	            markers.push(marker);
-	 
+			  markers.push(marker);
 	        });
 		}).fail(function() {
 			alert("Erro ao carregar denúncias.");
