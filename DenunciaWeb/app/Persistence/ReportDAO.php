@@ -46,7 +46,7 @@ class ReportDAO extends BaseDAO
     public function getAllReports($start, $max)
     {
         try {
-            $query = $this->db->createQuery("SELECT r,ue FROM App\Model\Report AS r JOIN r.user AS ue ORDER BY r.report_id DESC");
+            $query = $this->db->createQuery("SELECT r,ue FROM App\Model\Report AS r JOIN r.user AS ue ORDER BY r.creation_date DESC");
             
             if (! is_null($start) && ! is_null($max))
                 $query->setFirstResult($start)->setMaxResults($max);

@@ -22,11 +22,17 @@
 	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 		<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="{$url}">DenunciaAPP</a>
+				<a class="navbar-brand" href="{$url}">Denuncia APP</a>
 			</div>
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="{$url}">Home</a></li>
+					<li {if $active_link== "home"}class="active"{/if}><a href="{$url}">Home</a></li>
+					<li class="dropdown {if $active_link== "admin"}active{/if}"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown">Administração <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="{$url}admin/view-reports/">Lista de Denúncias</a></li>
+						</ul>
+					</li>
 				</ul>
 			</div>
 		</div>

@@ -13,7 +13,12 @@ if (defined('PRODUCTION') && file_exists($cache)) {
     // Home
     $router->add('Home.index', '/');
     
-    // Order
+    //
+    $router->add('Admin.view-reports', '/admin/view-reports{/page}/')->addTokens(array(
+        'page' => 'page-([1-9][0-9]*)'
+    ));
+    
+    // API
     $router->add('API.action', '/api/{action}/')->addTokens(array(
         'action' => 'login-user|create-report|add-comment|get-near-reports|teste'
     ));
