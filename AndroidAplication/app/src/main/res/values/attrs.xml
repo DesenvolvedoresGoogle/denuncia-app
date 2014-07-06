@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <attr name="typeface" format="enum">
+        <enum name="regular" value="0"/>
+        <enum name="bold" value="1"/>
+        <enum name="italic" value="2"/>
+        <enum name="light" value="3"/>
+    </attr>
+
     <attr name="measure_with" format="enum">
         <enum name="width" value="0" />
         <enum name="height" value="1" />
@@ -8,6 +15,10 @@
 
     <declare-styleable name="SquareView">
         <attr name="measure_with"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomTextView">
+        <attr name="typeface"/>
     </declare-styleable>
 </resources>
 

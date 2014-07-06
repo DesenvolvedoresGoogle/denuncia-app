@@ -58,7 +58,7 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
             e.printStackTrace();
         }
 
-        mBar = findViewById(R.id.report_nearby);
+        mBar = findViewById(R.id.report_bar);
         mHeader = findViewById(R.id.report_header);
         mReportImage = (ImageView) findViewById(R.id.report_photo);
 

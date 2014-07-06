@@ -2,6 +2,7 @@
 
 
 <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sliding_layout"
     android:layout_width="match_parent"
@@ -19,7 +20,7 @@
             android:id="@android:id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/view_margin"/>
+            android:layout_marginTop="@dimen/view_margin" />
 
         <RelativeLayout
             android:id="@+id/report_header"
@@ -31,23 +32,49 @@
                 android:id="@+id/report_photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/report_nearby"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
+        <LinearLayout
+            android:id="@+id/report_bar"
             android:layout_below="@id/report_header"
-            android:text="@string/dencuncias_proximas" />
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="68dp">
+
+            <TextView
+                android:id="@+id/report_title"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="@string/dencuncias_proximas" />
+
+            <TextView
+                android:id="@+id/report_date"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/report_header"
+                android:text="@string/dencuncias_proximas" />
+        </LinearLayout>
 
     </RelativeLayout>
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/sliding_panel_height"
-        android:gravity="center"
-        android:text="Denunciar"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <br.com.denuncia.ui.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sliding_panel_height"
+            android:background="@color/footer"
+            android:gravity="center"
+            android:text="Denunciar"
+            android:textAllCaps="true"
+            android:textSize="22sp"
+            app:typeface="bold"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>
