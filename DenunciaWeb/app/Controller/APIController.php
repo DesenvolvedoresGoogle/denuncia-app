@@ -14,9 +14,10 @@ class APIController extends BaseController
 
     private function getLoggedUser()
     {
+        $_POST['token'] = (isset($_POST['token']) ? $_POST['token'] : null);
         $user = $this->user_business->getUserByToken($_POST['token']);
         if (is_null($user)) {
-            $this->view->assign('erro', 'Disconnect');
+            $this->view->assign('erro', 'Logout');
             
             $this->view->display();
             exit();
@@ -74,16 +75,48 @@ class APIController extends BaseController
         $this->view->display();
     }
 
+    public function addCommentAction()
+    {
+        $user = $this->getLoggedUser();
+        $_POST['report_id'] = (isset($_POST['report_id']) ? $_POST['report_id'] : null);
+        $report = (new \App\Business\ReportBusiness($this->db))->getReportById($_POST['report_id']);
+        if (! is_null($report)) {
+            $comment_business = new \App\Business\CommentBusiness($this->db);
+        } else
+            $this->view->assign('erro', 'Denuncia não encontrada');
+        
+        $this->view->display();
+    }
+
+    public function getNearReportsAction()
+    {
+        $user = $this->getLoggedUser();
+        if (isset($_POST['latitude']) && isset($_POST['longitude'])) {
+            $report_business = new \App\Business\ReportBusiness($this->db);
+            $reports = $report_business->getReportsArround($_POST['latitude'], $_POST['longitude']);
+            $result = array();
+            if (! is_null($reports)) {
+                foreach ($reports as $report) {
+                    $result[] = $report->toArray();
+                }
+            }
+            $this->view->assign('reports', $result);
+        } else
+            $this->view->assign('erro', 'Necessário enviar latitude e longitude');
+        
+        $this->view->display();
+    }
+
     public function testeAction()
     {
         $report_business = new \App\Business\ReportBusiness($this->db);
         $reports = $report_business->getReportsArround(10.6, 10.6);
-        $array = array();
+        $result = array();
         foreach ($reports as $report) {
-            $array[] = $report->toArray();
+            $result[] = $report->toArray();
         }
         
-        $this->view->assign('test', $array);
+        $this->view->assign('reports', $result);
         
         $this->view->display();
     }

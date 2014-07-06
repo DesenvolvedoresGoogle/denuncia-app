@@ -30,7 +30,7 @@ class ReportBusiness
      */
     public function getReportsArround($lat, $long)
     {
-        if (!is_null($lat) && !is_null($long))
+        if ((is_double($lat) || is_numeric($lat)) && (is_double($long) || is_numeric($long)))
             return $this->reportDAO->getReportsArround($lat, $long);
         else
             return null;
@@ -61,6 +61,8 @@ class ReportBusiness
         
         $this->validateTitle($report->getTitle());
         $this->validateDescription($report->getDescription());
+        $this->validateUser($report->getUser());
+        $this->validatePhoto($report->getPhoto());
         
         if (count($this->validate_erros) > 0)
             return false;
@@ -88,4 +90,23 @@ class ReportBusiness
         }
     }
 
+    public function validateUser(\App\Model\User $user)
+    {
+        if(!is_null($user) && !is_null($user->getUserId()))
+            return true;
+        else {
+            $this->validate_erros['user'] = 'Denuncia precisa de um usuário';
+            return false;
+        }
+    }
+    
+    public function validatePhoto($photo)
+    {
+        if(!is_null($photo) && strlen($photo) > 0)
+            return true;
+        else {
+            $this->validate_erros['photo'] = 'Denuncia precisa de uma foto';
+            return false;
+        }
+    }
 }
