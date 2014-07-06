@@ -112,7 +112,7 @@ class Comment
     {
         return $this->report;
     }
-    
+
     public function toArray()
     {
         return array(

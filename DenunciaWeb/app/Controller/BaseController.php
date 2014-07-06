@@ -16,6 +16,7 @@ class BaseController
     {
         session_start();
         $this->params = $params;
+        \App\Library\Clean::cleanArray($_POST); //Limpando Posts
         $this->config = require_once APP_PATH . '/config.php';
         if($is_api)
             $this->view = new \App\View\APIView();

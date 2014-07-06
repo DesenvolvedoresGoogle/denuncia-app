@@ -32,8 +32,12 @@ class APIController extends BaseController
             $token = sha1(microtime() . $_POST['google_id']);
             $user = $this->user_business->getUserByGoogleId($_POST['google_id']);
             
-            if (is_null($user))
-                $user = new \App\Model\User($_POST); // Cadastro do novo usuário
+            if (is_null($user)){
+                $user = new \App\Model\User();
+                $user->setGoogleId(isset($_POST['google_id']) ? $_POST['google_id'] : null);
+                $user->setName(isset($_POST['name']) ? $_POST['name'] : null);
+                $user->setPhoto(isset($_POST['photo']) ? $_POST['photo'] : null);
+            }
             
             $user->setToken($token);
             

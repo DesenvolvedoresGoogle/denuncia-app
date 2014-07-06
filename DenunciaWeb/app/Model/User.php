@@ -52,14 +52,8 @@ class User
      */
     protected $comments;
 
-    public function __construct($infos = null)
+    public function __construct()
     {
-        if (is_array($infos)) {
-            $this->google_id = (isset($infos['google_id']) ? $infos['google_id'] : null);
-            $this->name = (isset($infos['name']) ? $infos['name'] : null);
-            $this->photo = (isset($infos['photo']) ? $infos['photo'] : null);
-        }
-        
         $this->reports = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
