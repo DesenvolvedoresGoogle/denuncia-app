@@ -14,7 +14,7 @@ class ReportDAO extends BaseDAO
     public function getReportById($id)
     {
         try {
-            $query = $this->db->createQuery("SELECT r,ue, c, cu FROM App\Model\Report AS r JOIN r.user AS ue LEFT JOIN r.comments AS c LEFT JOIN c.user AS cu WHERE r.report_id = :id");
+            $query = $this->db->createQuery("SELECT r,ue,c,cu FROM App\Model\Report AS r JOIN r.user AS ue LEFT JOIN r.comments AS c LEFT JOIN c.user AS cu WHERE r.report_id = :id");
             $query->setParameter('id', $id);
             $report = $query->getOneOrNullResult();
         } catch (\Exception $e) {

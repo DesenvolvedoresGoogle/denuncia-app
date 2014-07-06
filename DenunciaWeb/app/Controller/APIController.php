@@ -117,6 +117,17 @@ class APIController extends BaseController
         $report = (new \App\Business\ReportBusiness($this->db))->getReportById($_POST['report_id']);
         if (! is_null($report)) {
             $comment_business = new \App\Business\CommentBusiness($this->db);
+            $comment = new \App\Model\Comment();
+            $comment->setReport($report);
+            $comment->setComment(isset($_POST['comment']) ? $_POST['comment'] : null);
+            $comment->setUser($user);
+            
+            try {
+                $comment_business->update($comment);
+                $this->view->assign('comment', $comment->toArray());
+            } catch (\Exception $e) {
+                $this->view->assign('erro', $e->getMessage());
+            }
         } else
             $this->view->assign('erro', 'Denuncia não encontrada');
         

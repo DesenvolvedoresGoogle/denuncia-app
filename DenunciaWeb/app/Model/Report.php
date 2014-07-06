@@ -211,9 +211,10 @@ class Report
             'longitude' => $this->longitude,
             'address' => $this->address,
             'creation_date' => $this->creation_date->getTimestamp(),
-            'user' => $this->user->toArray()
+            'user' => $this->user->toArray(),
+            'comments' => array()
         );
-        if (count($this->comments->toArray()) > 0) {
+        if (count($this->comments) > 0) {
             foreach ($this->comments as $comment) {
                 $return['comments'][] = $comment->toArray();
             }
