@@ -56,7 +56,7 @@ class APIController extends BaseController
     public function createReportAction()
     {
         $user = $this->getLoggedUser();
-        
+        $photo = null;
         try {
             if (! isset($_FILES['image']['error']) || is_array($_FILES['image']['error'])) {
                 throw new \Exception('É necessário enviar a imagem');
@@ -76,19 +76,18 @@ class APIController extends BaseController
             
             $finfo = new \finfo(FILEINFO_MIME_TYPE);
             if (false === $ext = array_search($finfo->file($_FILES['image']['tmp_name']), array(
-                'jpg' => 'image/jpeg',
-                'png' => 'image/png',
-                'gif' => 'image/gif'
+                'jpg' => 'image/jpeg'
             ), true)) {
                 throw new \Exception('Formato de imagem inválido');
             }
             
-            $photo = sha1($_FILES['image']['tmp_name'].$user->getToken()) . '.jpg';
+            $sha1 = sha1($_FILES['image']['tmp_name'].$user->getToken());
+            $photo =  $sha1 . '.jpg';
             
             if (! move_uploaded_file($_FILES['image']['tmp_name'], IMAGES_PATH.'/'.$photo)) {
                 throw new \Exception('Erro Fatal');
             }
-                        
+                       
             $report = new \App\Model\Report();
             $report->setTitle(isset($_POST['title']) ? $_POST['title'] : null);
             $report->setDescription(isset($_POST['description']) ? $_POST['description'] : null);
@@ -102,8 +101,15 @@ class APIController extends BaseController
             $report_business = new \App\Business\ReportBusiness($this->db);
             
             $report_business->update($report);
+            
+            //Comprimindo Imagem
+            $img = \imagecreatefromjpeg(IMAGES_PATH.'/'.$photo); 
+            \iimagejpeg($img,IMAGES_PATH.'/'.$sha1.'SMALL.jpg',50);
+            
             $this->view->assign('report', $report->toArray());
         } catch (\Exception $e) {
+            if($photo != null)
+                \unlink(IMAGES_PATH.'/'.$photo);
             $this->view->assign('erro', $e->getMessage());
         }
         

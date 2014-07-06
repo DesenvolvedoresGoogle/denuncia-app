@@ -2,7 +2,6 @@ $(document).ready(function() {
 
 	initialLocation = null;
 	browserSupportFlag = new Boolean();
-	positionGlobal = {};
 	
 	 myOptions = {
 		zoom: 15,

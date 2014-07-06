@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Model\User
  *
  * @ORM\Entity()
- * @ORM\Table(name="user")
+ * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="google_id_UNIQUE", columns={"google_id"})})
  */
 class User
 {
