@@ -52,4 +52,24 @@
 		</form>
 	</div>
 </div>
+<h2 class="text-center" style="margin:20px;">Comentários</h2>
+<table class="table table-striped table-hover">
+        	<tr>
+        		<th></th>
+        		<th>Usuário</th>
+        		<th>Comentário</th>
+        	</tr>
+        	{foreach $report->getComments() as $comment}
+        	<tr>
+        		<td><img src="{$comment->getUser()->getPhoto()}" class="img-circle" height="30" width="30"></td>
+        		<td><a href="{$url}admin/view-user/id-{$comment->getUser()->getUserId()}/" target="_blank">{$comment->getUser()->getName()}</a></td>
+        		<td>{$comment->getComment()}</td>
+        	</tr>
+        	{foreachelse}
+        	   <tr>
+        		<td colspan="3"><h4 class="text-center">Nada encontrado!</h4></td>
+        	</tr>
+        	{/foreach}
+        
+        </table>
 {/block}
