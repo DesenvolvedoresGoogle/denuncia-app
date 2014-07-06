@@ -1,7 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<View xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/report_bar"
     android:layout_width="match_parent"
-    android:layout_height="348dp">
+    android:layout_height="60dp"
+    android:layout_marginTop="@dimen/report_header_height"
+    android:background="@color/bar"
+    tools:context="br.com.denuncia.ReportActivity">
 
-</View>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/screen_margin"
+        android:paddingRight="@dimen/view_margin">
+
+        <br.com.denuncia.ui.CustomTextView
+            android:id="@+id/report_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="Calçada danificada"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            app:typeface="bold" />
+
+        <br.com.denuncia.ui.CustomTextView
+            android:id="@+id/report_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="Bairro Santa Tereza, 17/11/13, 17:55"
+            android:textColor="@android:color/white"
+            app:typeface="light" />
+    </LinearLayout>
+
+    <br.com.denuncia.ui.SquareImageView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:onClick="showMap"
+        android:padding="@dimen/view_margin"
+        android:src="@drawable/ic_action_place"
+        app:measure_with="height" />
+</LinearLayout>

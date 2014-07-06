@@ -16,7 +16,7 @@
     <RelativeLayout
         android:id="@+id/report_header"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="@dimen/report_header_height"
         android:gravity="center">
 
         <ImageView
@@ -26,52 +26,6 @@
             android:scaleType="centerCrop" />
 
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/report_bar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@id/report_header"
-        android:background="@color/bar">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/screen_margin"
-            android:paddingRight="@dimen/view_margin">
-
-            <br.com.denuncia.ui.CustomTextView
-                android:id="@+id/report_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="Calçada danificada"
-                android:textAllCaps="true"
-                android:textColor="@android:color/white"
-                app:typeface="bold" />
-
-            <br.com.denuncia.ui.CustomTextView
-                android:id="@+id/report_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="Bairro Santa Tereza, 17/11/13, 17:55"
-                android:textColor="@android:color/white"
-                app:typeface="light" />
-        </LinearLayout>
-
-        <br.com.denuncia.ui.SquareImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:onClick="showMap"
-            android:padding="@dimen/view_margin"
-            android:src="@drawable/ic_action_place"
-            app:measure_with="height" />
-    </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/report_footer"

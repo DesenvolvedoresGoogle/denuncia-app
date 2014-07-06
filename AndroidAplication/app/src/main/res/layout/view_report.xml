@@ -10,6 +10,7 @@
         android:id="@+id/view_report_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:measure_with="width"/>
+        app:measure_with="width"
+        android:scaleType="centerCrop"/>
 
 </LinearLayout>

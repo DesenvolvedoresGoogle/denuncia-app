@@ -64,17 +64,14 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
         mHeader = findViewById(R.id.report_header);
         mReportImage = (ImageView) findViewById(R.id.report_photo);
 
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int screenWidth = size.x;
+
 
         getTheme().resolveAttribute(android.R.attr.actionBarSize, mTypedValue,
                 true);
         mActionBarHeight = TypedValue.complexToDimensionPixelSize(
                 mTypedValue.data, getResources().getDisplayMetrics());
 
-        mMinHeaderTranslation = -screenWidth + mActionBarHeight;
+        mMinHeaderTranslation = -getResources().getDimensionPixelSize(R.dimen.report_header_height) + mActionBarHeight;
 
         new ImageLoader().execute();
 

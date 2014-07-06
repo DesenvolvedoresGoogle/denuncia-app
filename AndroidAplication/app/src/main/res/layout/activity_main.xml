@@ -19,7 +19,7 @@
         <LinearLayout
             android:id="@+id/main_header"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="@dimen/main_header_height"
             android:gravity="center"
             android:background="#000077"
             android:orientation="vertical">
@@ -39,6 +39,7 @@
                 android:shadowRadius="1"/>
 
             <br.com.denuncia.ui.CustomTextView
+                android:id="@+id/main_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/main_app_name"
@@ -66,6 +67,7 @@
             android:text="@string/dencuncias_proximas"/>
 
         <ListView
+            android:id="@android:id/list"
             android:layout_below="@id/main_nearby"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
