@@ -12,6 +12,7 @@ class HTMLView implements iView
         $this->smarty->setTemplateDir(APP_PATH . '/View/Template/');
         $this->smarty->setCompileDir(CACHE_PATH . '/tpl_comp/');
         $this->assign('url', URL);
+        $this->assign('active_link', '');
     }
 
     public function assign($key, $value)
@@ -22,5 +23,10 @@ class HTMLView implements iView
     public function display($tpl = null)
     {
         $this->smarty->display($tpl);
+    }
+    
+    public function setActiveLink($value)
+    {
+        $this->assign('active_link', $value);
     }
 }

@@ -15,10 +15,19 @@ function getCamelCase($string)
 $route = $router->match(URL_PATH, $_SERVER);
 
 if ($route) {
+    $params = array();
+    foreach ($route->params as $key => $value) {
+        if (! is_null($value) && isset($route->tokens[$key]) && strstr($route->tokens[$key], ')')) {
+            preg_match('#' . $route->tokens[$key] . '#', $value, $value);
+            array_shift($value);
+        }
+        $params[$key] = $value;
+    }
+    
     $controller_class = '\App\Controller\\' . $route->params['controller'] . 'Controller';
     $action = getCamelCase($route->params['action']) . 'Action';
     
-    $controller = new $controller_class($route->params);
+    $controller = new $controller_class($params);
     $controller->$action();
 } else
     new \App\Controller\PageNotFoundController();
