@@ -28,7 +28,7 @@ if (defined('PRODUCTION') && file_exists($cache)) {
     
     // API
     $router->add('API.action', '/api/{action}/')->addTokens(array(
-        'action' => 'login-user|create-report|get-report|add-comment|get-near-reports|teste'
+        'action' => 'login-user|create-report|get-report|add-comment|get-near-reports'
     ));
 
     // Caching

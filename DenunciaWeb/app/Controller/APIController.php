@@ -59,7 +59,7 @@ class APIController extends BaseController
         
         try {
             if (! isset($_FILES['image']['error']) || is_array($_FILES['image']['error'])) {
-                throw new \Exception('Parâmetros inválidos');
+                throw new \Exception('É necessário enviar a imagem');
             }
             
             switch ($_FILES['image']['error']) {
@@ -117,6 +117,17 @@ class APIController extends BaseController
         $report = (new \App\Business\ReportBusiness($this->db))->getReportById($_POST['report_id']);
         if (! is_null($report)) {
             $comment_business = new \App\Business\CommentBusiness($this->db);
+            $comment = new \App\Model\Comment();
+            $comment->setReport($report);
+            $comment->setComment(isset($_POST['comment']) ? $_POST['comment'] : null);
+            $comment->setUser($user);
+            
+            try {
+                $comment_business->update($comment);
+                $this->view->assign('comment', $comment->toArray());
+            } catch (\Exception $e) {
+                $this->view->assign('erro', $e->getMessage());
+            }
         } else
             $this->view->assign('erro', 'Denuncia não encontrada');
         
@@ -125,8 +136,8 @@ class APIController extends BaseController
 
     public function getNearReportsAction()
     {
-        // if(!isset($_POST['max']))
-        // $user = $this->getLoggedUser();
+        if(!isset($_POST['max']))
+            $user = $this->getLoggedUser();
         if (isset($_POST['latitude']) && isset($_POST['longitude'])) {
             $report_business = new \App\Business\ReportBusiness($this->db);
             $reports = $report_business->getReportsArround($_POST['latitude'], $_POST['longitude']);
@@ -150,26 +161,12 @@ class APIController extends BaseController
         if (isset($_POST['report_id'])) {
             $report = (new \App\Business\ReportBusiness($this->db))->getReportById($_POST['report_id']);
             if(!is_null($report))
-                $this->view->assign('report', $report->toArray());
+                $this->view->assign('report', $report->toArray(true));
             else
                 $this->view->assign('erro', 'Denúncia não encontrada');
         } else
             $this->view->assign('erro', 'Necessário enviar report_id');
     
-        $this->view->display();
-    }
-
-    public function testeAction()
-    {
-        $report_business = new \App\Business\ReportBusiness($this->db);
-        $reports = $report_business->getReportsArround(10.6, 10.6);
-        $result = array();
-        foreach ($reports as $report) {
-            $result[] = $report->toArray();
-        }
-        
-        $this->view->assign('reports', $result);
-        
         $this->view->display();
     }
 }

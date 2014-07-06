@@ -200,7 +200,7 @@ class Report
         return $this->comments;
     }
 
-    public function toArray()
+    public function toArray($try_comment = false)
     {
         $return = array(
             'report_id' => $this->report_id,
@@ -211,11 +211,14 @@ class Report
             'longitude' => $this->longitude,
             'address' => $this->address,
             'creation_date' => $this->creation_date->getTimestamp(),
-            'user' => $this->user->toArray()
+            'user' => $this->user->toArray(),
+            'comments' => array()
         );
-        if (count($this->comments->toArray()) > 0) {
-            foreach ($this->comments as $comment) {
-                $return['comments'][] = $comment->toArray();
+        if ($try_comment) {
+            if (count($this->comments) > 0) {
+                foreach ($this->comments as $comment) {
+                    $return['comments'][] = $comment->toArray();
+                }
             }
         }
         
