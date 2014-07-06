@@ -44,12 +44,13 @@ public class MapsActivity extends FragmentActivity  {
 
     // GPSTracker class
     private GPSTracker gps;
+
+    private Location location;
     Button btnCapturePicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final Location location;
         setContentView(R.layout.activity_maps);
 
         btnCapturePicture = (Button) findViewById(R.id.btnCapturePicture);
@@ -69,9 +70,6 @@ public class MapsActivity extends FragmentActivity  {
         mMap.animateCamera(zoom);
 
 
-
-
-
         /**
          * Capture image button click event
          * */
@@ -79,16 +77,9 @@ public class MapsActivity extends FragmentActivity  {
 
             @Override
             public void onClick(View v) {
-                BitmapDescriptor image;
                 // capture picture
                 captureImage();
-                //mudar isso
-                BitmapFactory.Options options = new BitmapFactory.Options();
 
-                final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
-                        options);
-                image = BitmapDescriptorFactory.fromBitmap(bitmap);
-                MapModule.insertProblem(location, mMap, image );
             }
         });
 
@@ -187,5 +178,48 @@ public class MapsActivity extends FragmentActivity  {
 
         return mediaFile;
     }
+
+
+
+    /**
+     * Receiving activity result method will be called after closing the camera
+     * */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            BitmapDescriptor image;
+            // successfully captured the image
+            BitmapFactory.Options options = new BitmapFactory.Options();
+
+            final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
+                    options);
+            image = BitmapDescriptorFactory.fromBitmap(bitmap);
+            MapModule.insertProblem(location, mMap, image);
+
+        }
+    }
+
+    /*
+ * Here we store the file url as it will be null after returning from camera
+ * app
+ */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // save file url in bundle as it will be null on scren orientation
+        // changes
+        outState.putParcelable("file_uri", fileUri);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // get the file url
+        fileUri = savedInstanceState.getParcelable("file_uri");
+    }
+
 }
 
