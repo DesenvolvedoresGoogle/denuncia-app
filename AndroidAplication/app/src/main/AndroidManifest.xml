@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.login" >
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -13,7 +11,8 @@
         <uses-library android:name="com.google.android.maps" />
 
         <activity
-            android:name="br.com.denuncia.MyActivity"
+            android:name="br.com.denuncia.MainActivity"
+            android:theme="@style/AppTheme.Overlay"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +22,7 @@
         </activity>
         <activity
             android:name="br.com.denuncia.ReportActivity"
+            android:theme="@style/AppTheme.Overlay"
             android:label="@string/title_activity_report" >
         </activity>
         <activity
@@ -44,7 +44,7 @@
         <activity
             android:name="br.com.denuncia.SendReportActivity"
             android:label="@string/title_activity_send_report"
-            android:parentActivityName="br.com.denuncia.MyActivity" >
+            android:parentActivityName="br.com.denuncia.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.denuncia.MyActivity" />

@@ -5,12 +5,10 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,7 +74,7 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
         new ImageLoader().execute();
 
         mPlaceHolderView = getLayoutInflater().inflate(
-                R.layout.view_header_placeholder, getListView(), false);
+                R.layout.view_placeholder_report, getListView(), false);
 
         setListAdapter(new CommentListAdapter(this, comments));
         getListView().setOnScrollListener(ReportActivity.this);

@@ -9,6 +9,8 @@ public class Constants {
     public static final String LOGIN_USER = "api/login-user/";
     public static String TOKEN = null;
     public static final int RC_SIGN_IN = 0;
+    public static final String NEAR_REPORTS = "api/get-near-reports/";
+    public static final String IMAGE = "http://denuncia.matheusmarques.com/images/";
 
 
 }

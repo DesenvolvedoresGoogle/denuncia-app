@@ -1,13 +1,14 @@
 package br.com.br.com.userController;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.IntentSender;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 
 import org.json.JSONObject;
-
-import java.security.spec.ECField;
 
 import br.com.br.com.utils.Constants;
 import br.com.login.LoginActivity;
@@ -16,8 +17,28 @@ import br.com.login.LoginActivity;
  * Created by Fernando on 06/07/2014.
  */
 public class Control {
-    public static void verificaToken(LoginActivity loginActivity){
-        if(Constants.TOKEN != null){
+    private static Control sControl;
+    // Google client to interact with Google API
+    private GoogleApiClient mGoogleApiClient;
+    private ConnectionResult mConnectionResult;
+    /**
+     * A flag indicating that a PendingIntent is in progress and prevents us
+     * from starting further intents.
+     */
+    private boolean mIntentInProgress;
+
+    private Control(GoogleApiClient mGoogleApiClient) {
+        this.mGoogleApiClient = mGoogleApiClient;
+    }
+
+    public static Control getInstance(GoogleApiClient mGoogleApiClient) {
+        if (sControl == null)
+            sControl = new Control(mGoogleApiClient);
+        return sControl;
+    }
+
+    public void verificaToken(LoginActivity loginActivity) {
+        if (Constants.TOKEN != null) {
             logoutGp(loginActivity);
         }
     }
@@ -25,27 +46,26 @@ public class Control {
     /**
      * Verifica se o JSON apresenta mensagem de erro e se o usuário deve ser deslogado
      */
-    public static void testaJSON(JSONObject jsonObject , LoginActivity loginActivity){
+    public void testaJSON(JSONObject jsonObject, Context context) {
         try {
             String erro = (String) jsonObject.get("erro");
-            if(erro != null && erro.equalsIgnoreCase("logout")){
-                logoutGp(loginActivity);
+            if (erro != null && erro.equalsIgnoreCase("logout")) {
+                logoutGp(context);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-
     }
+
     /**
      * Sign-out from google
      */
-    public static void logoutGp(LoginActivity loginActivity){
-        if (loginActivity.getmGoogleApiClient().isConnected()) {
-            Plus.AccountApi.clearDefaultAccount(loginActivity.getmGoogleApiClient());
-            loginActivity.getmGoogleApiClient().disconnect();
-            loginActivity.getmGoogleApiClient().connect();
-            loginActivity.updateUI(false);
+    public void logoutGp(Context context) {
+        if (mGoogleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+            mGoogleApiClient.connect();
             Constants.TOKEN = null;
         }
     }
@@ -53,9 +73,8 @@ public class Control {
     /**
      * Sign-in into google
      */
-    public static void signInWithGplus(LoginActivity loginActivity) {
-        if (! loginActivity.getmGoogleApiClient().isConnecting()) {
-            loginActivity.setmSignInClicked(true);
+    public void signInWithGplus(LoginActivity loginActivity) {
+        if (!mGoogleApiClient.isConnecting()) {
             resolveSignInError(loginActivity);
         }
     }
@@ -63,17 +82,28 @@ public class Control {
     /**
      * Method to resolve any signin errors
      */
-    public static void resolveSignInError(LoginActivity loginActivity) {
-        if (loginActivity.getmConnectionResult().hasResolution()) {
+    public void resolveSignInError(Activity activity) {
+        if (mConnectionResult.hasResolution()) {
             try {
-                loginActivity.setmIntentInProgress(true);
-                loginActivity.getmConnectionResult().startResolutionForResult(loginActivity, Constants.RC_SIGN_IN);
+                mIntentInProgress = true;
+                mConnectionResult.startResolutionForResult(activity, Constants.RC_SIGN_IN);
             } catch (IntentSender.SendIntentException e) {
-                loginActivity.setmIntentInProgress(false);
-                loginActivity.getmGoogleApiClient().connect();
+                mIntentInProgress = false;
+                mGoogleApiClient.connect();
             }
         }
     }
 
 
+    public GoogleApiClient getmGoogleApiClient() {
+        return mGoogleApiClient;
+    }
+
+    public ConnectionResult getmConnectionResult(){
+        return mConnectionResult;
+    }
+
+    public void setmConnectionResult(ConnectionResult mConnectionResult){
+        this.mConnectionResult = mConnectionResult;
+    }
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ListActivity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,18 +13,31 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.TextView;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
+import br.com.br.com.utils.Constants;
 import br.com.denuncia.adapter.ReportListAdapter;
 import br.com.denuncia.model.Report;
+import br.com.login.Json;
 import br.com.login.R;
+import br.com.maps.GPSTracker;
 
-public class MyActivity extends ListActivity implements AbsListView.OnScrollListener {
+public class MainActivity extends ListActivity implements AbsListView.OnScrollListener, AdapterView.OnItemClickListener, Json.PostListener {
 
     private static final String TAG = "MainActivity";
     private View mHeader;
@@ -39,14 +53,22 @@ public class MyActivity extends ListActivity implements AbsListView.OnScrollList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("");
+
+        GPSTracker gps = new GPSTracker(this);
+        Location location = new Location(gps.getLocation());
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+        params.add(new BasicNameValuePair("token", Constants.TOKEN));
+        params.add(new BasicNameValuePair("latitude", String.valueOf(location.getLatitude())));
+        params.add(new BasicNameValuePair("longitude", String.valueOf(location.getLongitude())));
+
+        Json.post(this, Constants.URL + Constants.NEAR_REPORTS, params);
 
         reports = new ArrayList<Report>();
-
-        try {
-            reports.add(new Report(new URL("http://www.sulmg.com.br/images/stories/android.png"), "Titulo", "Decrição", -21.7600964, -43.3471169));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
 
         mHeader = findViewById(R.id.main_header);
         mAppTitle = (TextView) findViewById(R.id.main_app_name);
@@ -59,14 +81,13 @@ public class MyActivity extends ListActivity implements AbsListView.OnScrollList
 
         mMinHeaderTranslation = -getResources().getDimensionPixelSize(R.dimen.main_header_height) + mActionBarHeight;
 
-        new ImageLoader().execute();
-
         mPlaceHolderView = getLayoutInflater().inflate(
-                R.layout.view_header_placeholder, getListView(), false);
+                R.layout.view_placeholder_main, getListView(), false);
 
-        getListView().setOnScrollListener(MyActivity.this);
+        getListView().setOnScrollListener(MainActivity.this);
         getListView().addHeaderView(mPlaceHolderView);
         getListView().smoothScrollToPosition(0);
+        getListView().setOnItemClickListener(this);
     }
 
 
@@ -123,6 +144,31 @@ public class MyActivity extends ListActivity implements AbsListView.OnScrollList
         return firstVisiblePosition * c.getHeight() - top + headerHeight;
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onPostSent(JSONObject jsonObject) {
+        try {
+            JSONArray results = jsonObject.getJSONArray("reports");
+            for (int i = 0; i < results.length(); i++) {
+                JSONObject json = results.getJSONObject(i);
+                reports.add(new Report(new URL(Constants.IMAGE + json.getString("photo")),
+                        json.getString("title"), json.getString("description"),
+                        json.getDouble("latitude"), json.getDouble("longitude")));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        new ImageLoader().execute();
+
+    }
+
     private class ImageLoader extends AsyncTask<Void, Void, Void> {
 
         private ArrayList<Bitmap> images;
@@ -150,7 +196,7 @@ public class MyActivity extends ListActivity implements AbsListView.OnScrollList
         @SuppressLint("NewApi")
         @Override
         protected void onPostExecute(Void result) {
-            setListAdapter(new ReportListAdapter(MyActivity.this, images));
+            setListAdapter(new ReportListAdapter(MainActivity.this, images));
         }
     }
 }

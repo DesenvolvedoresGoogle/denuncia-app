@@ -1,82 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/sliding_layout"
-    android:layout_width="match_parent"
+    android:background="@android:color/background_light"
     android:layout_height="match_parent"
-    android:gravity="bottom"
-    sothree:panelHeight="68dp"
-    sothree:shadowHeight="4dp">
+    android:layout_width="match_parent"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
+        android:background="#000077"
+        android:gravity="center"
+        android:id="@+id/main_header"
+        android:layout_height="@dimen/main_header_height"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/main_header"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/main_header_height"
-            android:gravity="center"
-            android:background="#000077"
-            android:orientation="vertical">
-
-            <br.com.denuncia.ui.CustomTextView
-                android:id="@+id/main_app_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name"
-                android:textAllCaps="true"
-                app:typeface="bold"
-                android:textSize="22sp"
-                android:textColor="@android:color/white"
-                android:shadowColor="#343434"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="1"/>
-
-            <br.com.denuncia.ui.CustomTextView
-                android:id="@+id/main_city"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/main_app_name"
-                android:text="Juiz de Fora"
-                android:textAllCaps="true"
-                app:typeface="light"
-                android:textSize="20sp"
-                android:textColor="@android:color/white"
-                android:shadowColor="#343434"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="1"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/main_nearby"
-            android:layout_below="@id/main_header"
-            android:layout_width="match_parent"
+        <br.com.denuncia.ui.CustomTextView
+            android:id="@+id/main_app_name"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/view_margin"
-            android:paddingTop="@dimen/view_margin"
-            android:paddingLeft="@dimen/screen_margin"
-            android:layout_marginRight="@dimen/screen_margin"
-            android:text="@string/dencuncias_proximas"/>
+            android:layout_width="wrap_content"
+            android:shadowColor="#343434"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:text="@string/app_name"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            app:typeface="bold" />
 
-        <ListView
-            android:id="@android:id/list"
-            android:layout_below="@id/main_nearby"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/view_margin"/>
+        <br.com.denuncia.ui.CustomTextView
+            android:id="@+id/main_city"
+            android:layout_below="@id/main_app_name"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:shadowColor="#343434"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:text="Juiz de Fora"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            app:typeface="light" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <ListView
+        android:id="@android:id/list"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
 
-</com.sothree.slidinguppanel.SlidingUpPanelLayout>
+</RelativeLayout>
