@@ -5,11 +5,7 @@ $(document).ready(function() {
 	positionGlobal = {};
 	
 	 myOptions = {
-		zoom: 15,                        // set the zoom level manually
-		zoomControl: false,
-		scaleControl: false,
-		scrollwheel: false,
-		disableDoubleClickZoom: true,
+		zoom: 15,
 		mapTypeId : google.maps.MapTypeId.ROADMAP
 	};
 	
@@ -48,7 +44,7 @@ $(document).ready(function() {
 		timeout = setTimeout(function() {
 			deleteMarkers();
 			loadPoints(map.getCenter().lat(), map.getCenter().lng());
-	    }, 3000);
+	    }, 2000);
 	  });
 	
 	function loadPoints(latitude, longitude) {
