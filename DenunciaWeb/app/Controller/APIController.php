@@ -104,7 +104,7 @@ class APIController extends BaseController
             
             //Comprimindo Imagem
             $img = \imagecreatefromjpeg(IMAGES_PATH.'/'.$photo); 
-            \iimagejpeg($img,IMAGES_PATH.'/'.$sha1.'SMALL.jpg',50);
+            \imagejpeg($img,IMAGES_PATH.'/'.$sha1.'SMALL.jpg',50);
             
             $this->view->assign('report', $report->toArray());
         } catch (\Exception $e) {
