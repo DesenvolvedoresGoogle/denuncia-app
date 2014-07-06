@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.login" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -10,21 +12,25 @@
         // Libs usadas
         <uses-library android:name="com.google.android.maps" />
 
-
         <activity
             android:name="br.com.denuncia.MyActivity"
             android:label="@string/title_activity_main" >
         </activity>
         <activity
             android:name="br.com.denuncia.ReportActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_report" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="br.com.maps.MapsActivity"
             android:label="@string/title_activity_maps" >
         </activity>
         <activity
-            android:name="br.com.login.LoginActivity"
+            android:name=".LoginActivity"
             android:label="@string/title_activity_login" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,6 +45,15 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />
+
+        <activity
+            android:name="br.com.denuncia.SendReportActivity"
+            android:label="@string/title_activity_send_report"
+            android:parentActivityName="br.com.denuncia.MyActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.denuncia.MyActivity" />
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -52,13 +67,13 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <uses-feature android:name="android.hardware.camera" />
-
-
 
 </manifest>

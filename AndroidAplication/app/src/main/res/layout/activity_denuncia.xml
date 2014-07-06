@@ -1,80 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:sothree="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/sliding_layout"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="bottom"
-    sothree:panelHeight="@dimen/sliding_panel_height"
-    sothree:shadowHeight="4dp">
+    android:orientation="vertical"
+    tools:context="br.com.denuncia.ReportActivity">
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <RelativeLayout
+        android:id="@+id/report_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="300dp"
+        android:gravity="center">
 
-        <ListView
-            android:id="@android:id/list"
+        <ImageView
+            android:id="@+id/report_photo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/view_margin" />
-
-        <RelativeLayout
-            android:id="@+id/report_header"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:gravity="center">
-
-            <ImageView
-                android:id="@+id/report_photo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop" />
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/report_bar"
-            android:layout_below="@id/report_header"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="68dp">
-
-            <TextView
-                android:id="@+id/report_title"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="@string/dencuncias_proximas" />
-
-            <TextView
-                android:id="@+id/report_date"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_below="@id/report_header"
-                android:text="@string/dencuncias_proximas" />
-        </LinearLayout>
+            android:scaleType="centerCrop" />
 
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/report_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="60dp"
+        android:layout_below="@id/report_header"
+        android:background="@color/bar">
 
-        <br.com.denuncia.ui.CustomTextView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/sliding_panel_height"
-            android:background="@color/footer"
-            android:gravity="center"
-            android:text="Denunciar"
-            android:textAllCaps="true"
-            android:textSize="22sp"
-            app:typeface="bold"
-            android:textColor="@android:color/white" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/screen_margin"
+            android:paddingRight="@dimen/view_margin">
+
+            <br.com.denuncia.ui.CustomTextView
+                android:id="@+id/report_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="Calçada danificada"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                app:typeface="bold" />
+
+            <br.com.denuncia.ui.CustomTextView
+                android:id="@+id/report_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="Bairro Santa Tereza, 17/11/13, 17:55"
+                android:textColor="@android:color/white"
+                app:typeface="light" />
+        </LinearLayout>
+
+        <br.com.denuncia.ui.SquareImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:onClick="showMap"
+            android:padding="@dimen/view_margin"
+            android:src="@drawable/ic_action_place"
+            app:measure_with="height" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/report_footer"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="Adicionar comentário..."
+            android:paddingLeft="@dimen/screen_margin"
+            android:paddingRight="4dp" />
+
+        <br.com.denuncia.ui.SquareImageView
+            android:tint="@color/footer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:onClick="sendComment"
+            android:src="@drawable/ic_action_send_now"
+            app:measure_with="height" />
 
     </LinearLayout>
 
-</com.sothree.slidinguppanel.SlidingUpPanelLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_above="@id/report_footer"
+        android:background="@color/footer" />
+</RelativeLayout>

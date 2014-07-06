@@ -2,6 +2,7 @@ package br.com.denuncia;
 
 import android.annotation.SuppressLint;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -25,10 +26,10 @@ import br.com.denuncia.adapter.CommentListAdapter;
 import br.com.denuncia.model.Comment;
 import br.com.denuncia.model.Report;
 import br.com.login.R;
+import br.com.maps.MapsActivity;
 
 public class ReportActivity extends ListActivity implements AbsListView.OnScrollListener {
     private static final String TAG = "ReportActivity";
-    //private ImageView mReportImage;
     private Report mReport;
     private View mHeader;
     private View mBar;
@@ -45,7 +46,7 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
         setContentView(R.layout.activity_denuncia);
 
         try {
-            mReport = new Report(new URL("http://osl.ulpgc.es/wosl/wp-content/uploads/2014/05/new-google-chrome-logo.jpg/"), "Titulo", "Decrição", 0, 0);
+            mReport = new Report(new URL("http://osl.ulpgc.es/wosl/wp-content/uploads/2014/05/new-google-chrome-logo.jpg/"), "Titulo", "Decrição", -21.7600964, -43.3471169);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -54,7 +55,7 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
 
         try {
             for (int i = 0; i < 100; i++)
-                comments.add(new Comment("Comentário teste", new URL("http://google.com/")));
+                comments.add(new Comment("Comentário teste" + i, new URL("http://google.com/")));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -141,6 +142,13 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
         return firstVisiblePosition * c.getHeight() - top + headerHeight;
     }
 
+    public void showMap(View v){
+        Intent intent = new Intent(this, MapsActivity.class);
+        intent.putExtra("latitude", mReport.getLatitude());
+        intent.putExtra("longitude", mReport.getLongitude());
+        startActivity(intent);
+    }
+
     private class ImageLoader extends AsyncTask<Void, Void, Void> {
 
         private Bitmap image;
@@ -150,7 +158,7 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
 
             try {
                 //TODO Verificar conexão
-                //if (mReport.getPhoto() != null)
+                if (mReport.getPhoto() != null)
                     image = BitmapFactory.decodeStream(mReport.getPhoto()
                             .openConnection().getInputStream());
 
@@ -167,7 +175,8 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
         @Override
         protected void onPostExecute(Void result) {
 
-            mReportImage.setImageBitmap(image);
+            if (image != null)
+                mReportImage.setImageBitmap(image);
         }
     }
 }
