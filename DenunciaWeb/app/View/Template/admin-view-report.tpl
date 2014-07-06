@@ -20,6 +20,30 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label class="col-sm-3 control-label">Foto</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" value="{$report->getPhoto()}" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Latitude</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" value="{$report->getLatitude()}" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Longitude</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" value="{$report->getLongitude()}" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Endereço</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" value="{$report->getAddress()}" disabled>
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="col-sm-3 control-label"><a href="{$url}admin/view-user/id-{$report->getUser()->getUserId()}/" target="_blank">Usuário</a></label>
 				<div class="col-sm-9">
 					<input type="text" class="form-control" value="{$report->getUser()->getName()}" disabled>
