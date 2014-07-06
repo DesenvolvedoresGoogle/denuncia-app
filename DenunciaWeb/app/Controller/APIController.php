@@ -169,18 +169,4 @@ class APIController extends BaseController
     
         $this->view->display();
     }
-
-    public function testeAction()
-    {
-        $report_business = new \App\Business\ReportBusiness($this->db);
-        $reports = $report_business->getReportsArround(10.6, 10.6);
-        $result = array();
-        foreach ($reports as $report) {
-            $result[] = $report->toArray();
-        }
-        
-        $this->view->assign('reports', $result);
-        
-        $this->view->display();
-    }
 }

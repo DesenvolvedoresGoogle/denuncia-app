@@ -27,7 +27,7 @@ class ReportDAO extends BaseDAO
     public function getReportsArround($lat, $long)
     {
         try {
-            $query = $this->db->createQuery("SELECT r, ue, ( 6371 * ACOS( COS( RADIANS(:lat) ) * COS( RADIANS( r.latitude ) ) * COS( RADIANS( r.longitude ) - RADIANS(:long) ) + SIN( RADIANS(:lat) ) * SIN( RADIANS( r.latitude ) ) ) ) AS distance FROM App\Model\Report AS r JOIN r.user AS ue HAVING distance < 25 ORDER BY distance");
+            $query = $this->db->createQuery("SELECT r, ue, ( 6371 * ACOS( COS( RADIANS(:lat) ) * COS( RADIANS( r.latitude ) ) * COS( RADIANS( r.longitude ) - RADIANS(:long) ) + SIN( RADIANS(:lat) ) * SIN( RADIANS( r.latitude ) ) ) ) AS distance FROM App\Model\Report AS r JOIN r.user AS ue HAVING distance < 5 ORDER BY distance");
             $query->setParameter('lat', $lat);
             $query->setParameter('long', $long);
             $result = $query->getResult();
