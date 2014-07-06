@@ -38,11 +38,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.br.com.userController.Control;
 import br.com.br.com.utils.Constants;
 
 public class LoginActivity extends Activity implements OnClickListener,
         ConnectionCallbacks, OnConnectionFailedListener, Json.PostListener {
-    private static final int RC_SIGN_IN = 0;
+
     // Logcat tag
     private static final String TAG = "LoginActivity";
 
@@ -51,6 +52,7 @@ public class LoginActivity extends Activity implements OnClickListener,
 
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
+
 
     /**
      * A flag indicating that a PendingIntent is in progress and prevents us
@@ -106,20 +108,7 @@ public class LoginActivity extends Activity implements OnClickListener,
         }
     }
 
-    /**
-     * Method to resolve any signin errors
-     */
-    private void resolveSignInError() {
-        if (mConnectionResult.hasResolution()) {
-            try {
-                mIntentInProgress = true;
-                mConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
-            } catch (SendIntentException e) {
-                mIntentInProgress = false;
-                mGoogleApiClient.connect();
-            }
-        }
-    }
+
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
@@ -137,7 +126,7 @@ public class LoginActivity extends Activity implements OnClickListener,
                 // The user has already clicked 'sign-in' so we attempt to
                 // resolve all
                 // errors until the user is signed in, or they cancel.
-                resolveSignInError();
+                Control.resolveSignInError(this);
             }
         }
 
@@ -146,7 +135,7 @@ public class LoginActivity extends Activity implements OnClickListener,
     @Override
     protected void onActivityResult(int requestCode, int responseCode,
                                     Intent intent) {
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == Constants.RC_SIGN_IN) {
             if (responseCode != RESULT_OK) {
                 mSignInClicked = false;
             }
@@ -175,7 +164,7 @@ public class LoginActivity extends Activity implements OnClickListener,
     /**
      * Updating the UI, showing/hiding buttons and profile layout
      */
-    private void updateUI(boolean isSignedIn) {
+    public void updateUI(boolean isSignedIn) {
         if (isSignedIn) {
             btnSignIn.setVisibility(View.GONE);
             btnSignOut.setVisibility(View.VISIBLE);
@@ -251,38 +240,16 @@ public class LoginActivity extends Activity implements OnClickListener,
         switch (v.getId()) {
             case R.id.btn_sign_in:
                 // Signin button clicked
-                signInWithGplus();
+                Control.resolveSignInError(this);
                 break;
             case R.id.btn_sign_out:
                 // Signout button clicked
-                signOutFromGplus();
+                Control.logoutGp(this);
                 break;
             case R.id.btn_revoke_access:
                 // Revoke access button clicked
                 revokeGplusAccess();
                 break;
-        }
-    }
-
-    /**
-     * Sign-in into google
-     */
-    private void signInWithGplus() {
-        if (!mGoogleApiClient.isConnecting()) {
-            mSignInClicked = true;
-            resolveSignInError();
-        }
-    }
-
-    /**
-     * Sign-out from google
-     */
-    private void signOutFromGplus() {
-        if (mGoogleApiClient.isConnected()) {
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            mGoogleApiClient.disconnect();
-            mGoogleApiClient.connect();
-            updateUI(false);
         }
     }
 
@@ -374,5 +341,37 @@ public class LoginActivity extends Activity implements OnClickListener,
         }
     }
 
+
+    public GoogleApiClient getmGoogleApiClient() {
+        return mGoogleApiClient;
+    }
+
+    public void setmGoogleApiClient(GoogleApiClient mGoogleApiClient) {
+        this.mGoogleApiClient = mGoogleApiClient;
+    }
+
+    public ConnectionResult getmConnectionResult() {
+        return mConnectionResult;
+    }
+
+    public void setmConnectionResult(ConnectionResult mConnectionResult) {
+        this.mConnectionResult = mConnectionResult;
+    }
+
+    public boolean ismIntentInProgress() {
+        return mIntentInProgress;
+    }
+
+    public void setmIntentInProgress(boolean mIntentInProgress) {
+        this.mIntentInProgress = mIntentInProgress;
+    }
+
+    public boolean ismSignInClicked() {
+        return mSignInClicked;
+    }
+
+    public void setmSignInClicked(boolean mSignInClicked) {
+        this.mSignInClicked = mSignInClicked;
+    }
 }
 
