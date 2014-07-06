@@ -30,13 +30,33 @@ class AdminController extends BaseController
                     $this->view->assign('hasNextPage', true);
                 }
             } elseif ($page != 1)
-                throw new \Exception();
+                throw new \Exception('Página inválida');
             
             $this->view->assign('page', $page);
             $this->view->assign('reports', $reports);
-            $this->view->display('view-reports.tpl');
+            $this->view->display('admin-view-reports.tpl');
         } catch (\Exception $e) {
             $this->pageNotFoundAction();
         }
+    }
+    
+    public function viewReportAction()
+    {
+        $report = (new \App\Business\ReportBusiness($this->db))->getReportById($this->params['id']);
+        if (! is_null($report)) {
+            $this->view->assign('report', $report);
+            $this->view->display('admin-view-report.tpl');
+        } else
+            $this->pageNotFoundAction();
+    }
+    
+    public function viewUserAction()
+    {
+        $user = (new \App\Business\UserBusiness($this->db))->getUserById($this->params['id']);
+        if (! is_null($user)) {
+            $this->view->assign('user', $user);
+            $this->view->display('admin-view-user.tpl');
+        } else
+            $this->pageNotFoundAction();
     }
 }

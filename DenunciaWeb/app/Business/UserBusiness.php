@@ -28,10 +28,10 @@ class UserBusiness
     /**
      * @return \App\Model\User
      */
-    public function getUserByUserId($user_id)
+    public function getUserById($user_id)
     {
         if (is_int($user_id) || is_numeric($user_id))
-            return $this->userDAO->getUserByUserId($user_id);
+            return $this->userDAO->getUserById($user_id);
         else
             return null;
     }

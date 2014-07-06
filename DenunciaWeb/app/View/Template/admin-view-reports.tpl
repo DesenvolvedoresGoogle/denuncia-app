@@ -15,7 +15,7 @@
         		<td><img src="{$url}images/{$report->getPhoto()}" class="img-circle" height="30" width="30"></td>
         		<td>{$report->getTitle()}</td>
         		<td>{$report->getAddress()}</td>
-        		<td><a href="{$url}admin/view-users/id-{$report->getUser()->getUserId()}/" target="_blank">{$report->getUser()->getName()}</a></td>
+        		<td><a href="{$url}admin/view-user/id-{$report->getUser()->getUserId()}/" target="_blank">{$report->getUser()->getName()}</a></td>
         		<td><a href="{$url}admin/view-report/id-{$report->getReportId()}/" target="_blank"><span class="glyphicon glyphicon-cog"></span></a></td>
         	</tr>
         	{foreachelse}

@@ -27,6 +27,7 @@
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 					<li {if $active_link== "home"}class="active"{/if}><a href="{$url}">Home</a></li>
+					<li {if $active_link== "map"}class="active"{/if}><a href="{$url}map/">Mapa</a></li>
 					<li class="dropdown {if $active_link== "admin"}active{/if}"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown">Administração <b class="caret"></b></a>
 						<ul class="dropdown-menu">
@@ -46,5 +47,6 @@
 	<script src="{$url}js/jquery-2.1.1.min.js"></script>
 	<!-- Bootstrap js -->
 	<script src="{$url}js/bootstrap.min.js"></script>
+	{block name=javascript}{/block}
 </body>
 </html>
