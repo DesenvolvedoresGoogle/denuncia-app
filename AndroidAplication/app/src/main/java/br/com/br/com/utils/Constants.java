@@ -7,6 +7,7 @@ package br.com.br.com.utils;
 public class Constants {
     public static final String URL = "http://denuncia.matheusmarques.com/" ;
     public static final String LOGIN_USER = "api/login-user/";
+    public static String TOKEN = null;
 
 
 }

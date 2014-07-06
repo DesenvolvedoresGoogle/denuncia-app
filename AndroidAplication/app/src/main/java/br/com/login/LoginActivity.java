@@ -334,8 +334,16 @@ public class LoginActivity extends Activity implements OnClickListener,
     }
 
     @Override
-    public void onPostSent(JSONObject jsonObject) {
+    public void onPostSent(JSONObject jsonObject){
+        try {
+            String status = (String) jsonObject.get("status");
+            if(status.equalsIgnoreCase("sucess")){
+                Constants.TOKEN = (String) jsonObject.get("token");
+            }
 
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
