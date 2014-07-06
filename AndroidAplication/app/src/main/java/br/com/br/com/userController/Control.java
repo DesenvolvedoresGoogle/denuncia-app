@@ -27,13 +27,18 @@ public class Control {
      */
     private boolean mIntentInProgress;
 
-    private Control(GoogleApiClient mGoogleApiClient) {
+    public Control(GoogleApiClient.ConnectionCallbacks connectionsCallback, GoogleApiClient.OnConnectionFailedListener onConnectionFailed, Context context) {
         this.mGoogleApiClient = mGoogleApiClient;
+        this.mGoogleApiClient = new GoogleApiClient.Builder(context)
+                .addConnectionCallbacks(connectionsCallback)
+                .addOnConnectionFailedListener(onConnectionFailed).addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
+        this.mGoogleApiClient.connect();
     }
 
-    public static Control getInstance(GoogleApiClient mGoogleApiClient) {
+    public static Control getInstance(GoogleApiClient.ConnectionCallbacks connectionsCallback, GoogleApiClient.OnConnectionFailedListener onConnectionFailed, Context context) {
         if (sControl == null)
-            sControl = new Control(mGoogleApiClient);
+            sControl = new Control(connectionsCallback, onConnectionFailed, context);
         return sControl;
     }
 
@@ -99,11 +104,11 @@ public class Control {
         return mGoogleApiClient;
     }
 
-    public ConnectionResult getmConnectionResult(){
+    public ConnectionResult getmConnectionResult() {
         return mConnectionResult;
     }
 
-    public void setmConnectionResult(ConnectionResult mConnectionResult){
+    public void setmConnectionResult(ConnectionResult mConnectionResult) {
         this.mConnectionResult = mConnectionResult;
     }
 }

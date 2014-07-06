@@ -78,7 +78,7 @@ public class LoginActivity extends Activity implements OnClickListener,
                 .addOnConnectionFailedListener(this).addApi(Plus.API)
                 .addScope(Plus.SCOPE_PLUS_LOGIN).build();
 
-        mControl = Control.getInstance(mGoogleApiClient);
+        mControl = Control.getInstance(this, this, this);
         
     }
 
@@ -141,6 +141,7 @@ public class LoginActivity extends Activity implements OnClickListener,
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override

@@ -2,6 +2,7 @@ package br.com.denuncia;
 
 import android.annotation.SuppressLint;
 import android.app.ListActivity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -15,6 +16,10 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -30,14 +35,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.br.com.userController.Control;
 import br.com.br.com.utils.Constants;
 import br.com.denuncia.adapter.ReportListAdapter;
 import br.com.denuncia.model.Report;
 import br.com.login.Json;
+import br.com.login.LoginActivity;
 import br.com.login.R;
 import br.com.maps.GPSTracker;
 
-public class MainActivity extends ListActivity implements AbsListView.OnScrollListener, AdapterView.OnItemClickListener, Json.PostListener {
+public class MainActivity extends ListActivity implements AbsListView.OnScrollListener, AdapterView.OnItemClickListener, Json.PostListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "MainActivity";
     private View mHeader;
@@ -55,20 +62,7 @@ public class MainActivity extends ListActivity implements AbsListView.OnScrollLi
         setContentView(R.layout.activity_main);
         setTitle("");
 
-        GPSTracker gps = new GPSTracker(this);
-        Location location = new Location(gps.getLocation());
-
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-
-        params.add(new BasicNameValuePair("token", Constants.TOKEN));
-        params.add(new BasicNameValuePair("latitude", String.valueOf(location.getLatitude())));
-        params.add(new BasicNameValuePair("longitude", String.valueOf(location.getLongitude())));
-
-        Json.post(this, Constants.URL + Constants.NEAR_REPORTS, params);
-
-        reports = new ArrayList<Report>();
+        Control mControl = Control.getInstance(this, this, this);
 
         mHeader = findViewById(R.id.main_header);
         mAppTitle = (TextView) findViewById(R.id.main_app_name);
@@ -151,6 +145,7 @@ public class MainActivity extends ListActivity implements AbsListView.OnScrollLi
 
     @Override
     public void onPostSent(JSONObject jsonObject) {
+        reports = new ArrayList<Report>();
         try {
             JSONArray results = jsonObject.getJSONArray("reports");
             for (int i = 0; i < results.length(); i++) {
@@ -158,6 +153,7 @@ public class MainActivity extends ListActivity implements AbsListView.OnScrollLi
                 reports.add(new Report(new URL(Constants.IMAGE + json.getString("photo")),
                         json.getString("title"), json.getString("description"),
                         json.getDouble("latitude"), json.getDouble("longitude")));
+                Log.v("test", i + "");
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -165,8 +161,39 @@ public class MainActivity extends ListActivity implements AbsListView.OnScrollLi
             e.printStackTrace();
         }
 
+        Log.v("test", -1 + "");
         new ImageLoader().execute();
 
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Toast.makeText(this, "Connected!", Toast.LENGTH_SHORT).show();
+
+        GPSTracker gps = new GPSTracker(this);
+        Location location = new Location(gps.getLocation());
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+        params.add(new BasicNameValuePair("token", Constants.TOKEN));
+        params.add(new BasicNameValuePair("latitude", String.valueOf(location.getLatitude())));
+        params.add(new BasicNameValuePair("longitude", String.valueOf(location.getLongitude())));
+
+        Json.post(this, Constants.URL + Constants.NEAR_REPORTS, params);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 
     private class ImageLoader extends AsyncTask<Void, Void, Void> {
