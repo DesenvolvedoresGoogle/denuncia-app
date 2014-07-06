@@ -330,6 +330,7 @@ public class LoginActivity extends Activity implements View.OnClickListener,
             }
 
             startActivity(new Intent(this, MainActivity.class));
+            finish();
 
         } catch (Exception e) {
             e.printStackTrace();

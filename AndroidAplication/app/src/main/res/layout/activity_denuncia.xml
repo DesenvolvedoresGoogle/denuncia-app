@@ -13,7 +13,8 @@
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="48dp"/>
 
     <RelativeLayout
         android:id="@+id/report_header"
@@ -38,6 +39,7 @@
         android:orientation="horizontal">
 
         <EditText
+            android:id="@+id/report_comment_text"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -46,6 +48,7 @@
             android:paddingRight="4dp" />
 
         <br.com.denuncia.ui.SquareImageView
+            android:id="@+id/report_comment"
             android:tint="@color/footer"
             android:layout_width="0dp"
             android:layout_height="match_parent"

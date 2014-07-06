@@ -36,7 +36,6 @@ public class SendReportActivity extends Activity implements View.OnClickListener
 
     private static final String MAPS_API_URL = "http://maps.googleapis.com/maps/api/geocode/json?latlng=";
     private Uri fileUri;
-    private int count = 0;
     private double latitude, longitude;
 
     @Override
@@ -95,51 +94,49 @@ public class SendReportActivity extends Activity implements View.OnClickListener
 
     @Override
     public void onPostSent(JSONObject jsonObject) {
-        if (count == 0) {
-            try {
+        try {
 
-                JSONArray results = jsonObject.getJSONArray("results");
-                JSONObject address = (JSONObject) results.get(0);
-                String formatedAddress = address.getString("formatted_address");
+            JSONArray results = jsonObject.getJSONArray("results");
+            JSONObject address = (JSONObject) results.get(0);
+            String formatedAddress = address.getString("formatted_address");
 
-                String title = ((EditText) findViewById(R.id.send_title)).getText().toString();
-                String description = ((EditText) findViewById(R.id.send_description)).getText().toString();
+            String title = ((EditText) findViewById(R.id.send_title)).getText().toString();
+            String description = ((EditText) findViewById(R.id.send_description)).getText().toString();
 
-                List<NameValuePair> params = new ArrayList<NameValuePair>();
-                MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-                builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
-                params.add(new BasicNameValuePair("token", Constants.TOKEN));
-                params.add(new BasicNameValuePair("title", title));
-                params.add(new BasicNameValuePair("description", description));
-                params.add(new BasicNameValuePair("latitude", String.valueOf(latitude)));
-                params.add(new BasicNameValuePair("longitude", String.valueOf(longitude)));
-                params.add(new BasicNameValuePair("address", formatedAddress));
-                params.add(new BasicNameValuePair("image", fileUri.getPath()));
+            params.add(new BasicNameValuePair("token", Constants.TOKEN));
+            params.add(new BasicNameValuePair("title", title));
+            params.add(new BasicNameValuePair("description", description));
+            params.add(new BasicNameValuePair("latitude", String.valueOf(latitude)));
+            params.add(new BasicNameValuePair("longitude", String.valueOf(longitude)));
+            params.add(new BasicNameValuePair("address", formatedAddress));
+            params.add(new BasicNameValuePair("image", fileUri.getPath()));
 
-                Json.post(this, Constants.URL + Constants.CREATE_REPORT, params);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            count++;
-        } else if(count == 1){
-            try {
-                if (jsonObject.getString("status").equals("fail"))
-                    Toast.makeText(this, jsonObject.getString("erro"), Toast.LENGTH_LONG).show();
-                else {
-                    JSONObject jsonObject1 = jsonObject.getJSONObject("report");
-                    Intent intent = new Intent(this, ReportActivity.class);
-                    intent.putExtra("id", jsonObject1.getInt("report_id"));
-                    startActivity(intent);
-                    finish();
+            Json.PostListener listener = new Json.PostListener() {
+                @Override
+                public void onPostSent(JSONObject jsonObject) {
+                    try {
+                        if (jsonObject.getString("status").equals("fail"))
+                            Toast.makeText(SendReportActivity.this, jsonObject.getString("erro"), Toast.LENGTH_LONG).show();
+                        else {
+                            JSONObject jsonObject1 = jsonObject.getJSONObject("report");
+                            Intent intent = new Intent(SendReportActivity.this, ReportActivity.class);
+                            intent.putExtra("id", jsonObject1.getInt("report_id"));
+                            startActivity(intent);
+                            finish();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            };
+            Json.post(listener, Constants.URL + Constants.CREATE_REPORT, params);
 
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

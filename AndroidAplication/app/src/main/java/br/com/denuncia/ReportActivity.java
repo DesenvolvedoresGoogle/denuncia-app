@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,7 +39,7 @@ import br.com.login.Json;
 import br.com.login.R;
 import br.com.maps.MapsActivity;
 
-public class ReportActivity extends ListActivity implements AbsListView.OnScrollListener, Json.PostListener {
+public class ReportActivity extends ListActivity implements AbsListView.OnScrollListener, Json.PostListener, View.OnClickListener {
     private static final String TAG = "ReportActivity";
     private Report mReport;
     private View mHeader;
@@ -55,7 +56,7 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
         setContentView(R.layout.activity_denuncia);
 
         Bundle extras = getIntent().getExtras();
-        if(extras == null)
+        if (extras == null)
             finish();
 
         int id = extras.getInt("id");
@@ -82,7 +83,7 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
         mPlaceHolderView = getLayoutInflater().inflate(
                 R.layout.view_placeholder_report, getListView(), false);
 
-
+        findViewById(R.id.report_comment).setOnClickListener(this);
 
         getListView().setOnScrollListener(ReportActivity.this);
         getListView().addHeaderView(mPlaceHolderView);
@@ -139,7 +140,7 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
         return firstVisiblePosition * c.getHeight() - top + headerHeight;
     }
 
-    public void showMap(View v){
+    public void showMap(View v) {
         Intent intent = new Intent(this, MapsActivity.class);
         intent.putExtra("latitude", mReport.getLatitude());
         intent.putExtra("longitude", mReport.getLongitude());
@@ -161,7 +162,7 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
 
             comments = new ArrayList<Comment>();
             JSONArray jsonArray = json.getJSONArray("comments");
-            for(int i = 0; i < jsonArray.length(); i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 comments.add(new Comment(jsonArray.getJSONObject(i).getJSONObject("user").getString("name"), jsonArray.getJSONObject(i).getString("comment"), null));
             }
 
@@ -171,6 +172,41 @@ public class ReportActivity extends ListActivity implements AbsListView.OnScroll
             e.printStackTrace();
         } catch (MalformedURLException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.report_comment:
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+                builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+                String text = ((EditText) findViewById(R.id.report_comment_text)).getText().toString();
+                ((EditText) findViewById(R.id.report_comment_text)).setText("");
+
+                params.add(new BasicNameValuePair("token", Constants.TOKEN));
+                params.add(new BasicNameValuePair("report_id", String.valueOf(mReport.getId())));
+                params.add(new BasicNameValuePair("comment", text));
+
+                Json.PostListener listener = new Json.PostListener() {
+                    @Override
+                    public void onPostSent(JSONObject jsonObject) {
+                        try {
+                            if (jsonObject.getString("status").equals("sucess")) {
+                                JSONObject json = jsonObject.getJSONObject("comment");
+                                comments.add(new Comment(json.getJSONObject("user").getString("name"), json.getString("comment"), null));
+                                setListAdapter(new CommentListAdapter(ReportActivity.this, comments));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                };
+                Json.post(listener, Constants.URL + Constants.CREATE_COMMENT, params);
+                break;
         }
     }
 

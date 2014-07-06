@@ -74,7 +74,6 @@ public class Json {
                             entity.addPart(params.get(index).getName(), new StringBody(params.get(index).getValue(), ContentType.DEFAULT_TEXT));
                         }
                     }
-
                     httpPost.setEntity(entity);
                 }
                 HttpResponse httpResponse = httpClient.execute(httpPost);

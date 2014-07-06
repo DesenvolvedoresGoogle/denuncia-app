@@ -48,7 +48,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:padding="@dimen/view_margin"
+                android:layout_marginTop="@dimen/view_margin"
+                android:layout_marginBottom="@dimen/view_margin"
                 android:background="@android:color/white"/>
 
             <br.com.denuncia.ui.CustomTextView
@@ -60,13 +61,11 @@
 
         </LinearLayout>
 
-        <br.com.denuncia.ui.SquareImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:onClick="showMap"
-            android:padding="@dimen/view_margin"
-            android:src="@drawable/ic_action_place"
-            app:measure_with="height" />
+            android:src="@drawable/ic_action_place" />
 
     </LinearLayout>
 </LinearLayout>
